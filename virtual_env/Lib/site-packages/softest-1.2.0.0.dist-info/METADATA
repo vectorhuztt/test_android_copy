@@ -1,0 +1,210 @@
+Metadata-Version: 2.1
+Name: softest
+Version: 1.2.0.0
+Summary: Supports lightweight soft assertions by extending the unittest.TestCase class
+Home-page: http://privately.maintained.for.now
+Author: Nick Umble
+Author-email: privately.maintained@for.now
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: Freeware
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Testing
+Description-Content-Type: text/markdown
+
+# softest - Soft Assertions
+
+Supports the soft assert style of testing,  
+where multiple assertions can fail within the same method,  
+while collecting and formatting those failures' stack traces  
+for reporting by a final `assert_all` call.
+
+Such stack traces are enhanced  
+to include the call hierarchy  
+from within the test class.
+
+## Usage
+
+```python
+import softest
+
+
+class ExampleTest(softest.TestCase):
+
+	def test_example(self):
+		self.soft_assert(self.assertEqual, 'Worf', 'wharf', 'Klingon is not ship receptacle')
+		self.soft_assert(self.assertTrue, True)
+		self.soft_assert(self.assertTrue, False)
+
+		self.assert_all()
+
+	def test_example_with_only_one_failure(self):
+		self.soft_assert(self.assertTrue, False)
+		self.assert_all()
+
+	# ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+	class SomeException(Exception):
+
+		def __init__(self, reason:str):
+			super().__init__(self)
+			self.reason = reason
+
+		def __str__(self):
+			return self.reason
+
+	# ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
+
+	def test_assert_raises(self):
+		with self.soft_assert_raises(self.SomeException) as assertion_context:
+			print('=)')
+		print(assertion_context)
+
+		with self.soft_assert_raises_regex(self.SomeException, 'reason') as another_context:
+			raise self.SomeException('reazon')
+		print(another_context)
+
+		self.assert_all()
+
+
+if __name__ == '__main__':
+	softest.main()
+```
+
+
+### Error Console Output
+
+```
+======================================================================
+FAIL: "test_assert_raises" (ExampleTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\test\softest_test.py", line 41, in test_assert_raises
+    self.assert_all()
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\main\softest\case.py", line 140, in assert_all
+    self.fail(''.join(failure_output))
+AssertionError: ++++ soft assert failure details follow below ++++
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+The following 2 failures were found in "test_assert_raises" (ExampleTest):
++----------------------+----------------------+----------------------+
+ Failure 1 ("test_assert_raises" method)
++----------------------+----------------------+----------------------+
+Traceback (most recent call last):
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\test\softest_test.py", line 32, in test_assert_raises
+    print('=)')
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\main\softest\context.py", line 51, in __exit__
+    "Context actions did not raise {}".format(exception_name))
+  File "C:\Users\nicholas.umble\AppData\Local\Programs\Python\Python36-32\lib\unittest\case.py", line 135, in _raiseFailure
+    raise self.test_case.failureException(msg)
+AssertionError: Context actions did not raise SomeException
+
+-+ [1/2] +-
+
++----------------------+----------------------+----------------------+
+ Failure 2 ("test_assert_raises" method)
++----------------------+----------------------+----------------------+
+SomeException: reazon
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\test\softest_test.py", line 37, in test_assert_raises
+    raise SomeException('reazon')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\main\softest\context.py", line 71, in __exit__
+    self.expected_regex.pattern, str(exception_value)))
+  File "C:\Users\nicholas.umble\AppData\Local\Programs\Python\Python36-32\lib\unittest\case.py", line 135, in _raiseFailure
+    raise self.test_case.failureException(msg)
+AssertionError: "reason" does not match the supplied regular expression "reazon"
+
+-+ [2/2] +-
+
+======================================================================
+FAIL: "test_example" (ExampleTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\test\softest_test.py", line 24, in test_example
+    self.assert_all()
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\main\softest\case.py", line 140, in assert_all
+    self.fail(''.join(failure_output))
+AssertionError: ++++ soft assert failure details follow below ++++
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+The following 2 failures were found in "test_example" (ExampleTest):
++----------------------+----------------------+----------------------+
+ Failure 1 ("test_example" method)
++----------------------+----------------------+----------------------+
+Traceback (most recent call last):
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\test\softest_test.py", line 20, in test_example
+    self.soft_assert(self.assertEqual, 'Worf', 'wharf', 'Klingon is not ship receptacle')
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\main\softest\case.py", line 64, in soft_assert
+    assert_method(*arguments, **keywords)
+  File "C:\Users\nicholas.umble\AppData\Local\Programs\Python\Python36-32\lib\unittest\case.py", line 829, in assertEqual
+    assertion_func(first, second, msg=msg)
+  File "C:\Users\nicholas.umble\AppData\Local\Programs\Python\Python36-32\lib\unittest\case.py", line 1203, in assertMultiLineEqual
+    self.fail(self._formatMessage(msg, standardMsg))
+  File "C:\Users\nicholas.umble\AppData\Local\Programs\Python\Python36-32\lib\unittest\case.py", line 670, in fail
+    raise self.failureException(msg)
+AssertionError: 'Worf' != 'wharf'
+- Worf
++ wharf
+ : Klingon is not ship receptacle
+
+-+ [1/2] +-
+
++----------------------+----------------------+----------------------+
+ Failure 2 ("test_example" method)
++----------------------+----------------------+----------------------+
+Traceback (most recent call last):
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\test\softest_test.py", line 22, in test_example
+    self.soft_assert(self.assertTrue, False)
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\main\softest\case.py", line 64, in soft_assert
+    assert_method(*arguments, **keywords)
+  File "C:\Users\nicholas.umble\AppData\Local\Programs\Python\Python36-32\lib\unittest\case.py", line 682, in assertTrue
+    raise self.failureException(msg)
+AssertionError: False is not true
+
+-+ [2/2] +-
+
+======================================================================
+FAIL: "test_example_with_only_one_failure" (ExampleTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\test\softest_test.py", line 28, in test_example_with_only_one_failure
+    self.assert_all()
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\main\softest\case.py", line 140, in assert_all
+    self.fail(''.join(failure_output))
+AssertionError: ++++ soft assert failure details follow below ++++
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+The following failure was found in "test_example_with_only_one_failure" (ExampleTest):
++----------------------+----------------------+----------------------+
+Traceback (most recent call last):
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\test\softest_test.py", line 27, in test_example_with_only_one_failure
+    self.soft_assert(self.assertTrue, False)
+  File "C:\more-programs\automation\workspaces\Ivan\Softest\src\main\softest\case.py", line 64, in soft_assert
+    assert_method(*arguments, **keywords)
+  File "C:\Users\nicholas.umble\AppData\Local\Programs\Python\Python36-32\lib\unittest\case.py", line 682, in assertTrue
+    raise self.failureException(msg)
+AssertionError: False is not true
+
+-+ [1/1] +-
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.016s
+
+FAILED (failures=3)
+```
+
+## Versions
+
+### 1.2.0.0
+
+Added `soft_assert_raises` and `soft_assert_raises_regex` to support/replace `assertRaises` and `assertRaisesRegex`.
+Updated output to include a failure count at the end of each failure, such as `-+ [1/2] +-`.
+
+
