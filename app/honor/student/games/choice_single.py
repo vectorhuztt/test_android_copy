@@ -12,29 +12,30 @@ from conf.decorator import teststep, teststeps
 
 
 class SingleChoiceGame(GameCommonEle):
+
     @teststep
     def wait_check_single_choice_page(self):
         """单项选择页面检查点"""
         locator = (By.ID, "{}question".format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_analysis_tab_page(self):
         """解析字样页面检查点 代表单选有解析文本"""
         locator = (By.ID, "{}hint_text".format(self.id_type()))
-        return self.get_wait_check_page_result(locator, timeout=4)
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def wait_check_analysis_text_page(self):
         """解析文本 页面检查点"""
         locator = (By.ID, "{}analysis_text".format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def wait_check_analysis_audio_page(self):
         """解析音频 页面检查点"""
         locator = (By.ID, "{}analysis_audio".format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator, timeout=3)
 
 
     @teststep
@@ -42,80 +43,80 @@ class SingleChoiceGame(GameCommonEle):
         """结果页单选解析字样检查点"""
         locator = (By.XPATH, "//android.widget.LinearLayout[@index='{}']//android.widget.TextView"
                              "[contains(@resource-id, 'hint_text')]".format(index))
-        return self.get_wait_check_page_result(locator, timeout=4)
+        return self.wait.wait_check_element(locator, timeout=4)
 
     @teststep
     def wait_check_result_analysis_audio_page(self, index):
         """结果页单选解析音频检查点"""
         locator = (By.XPATH, "//android.widget.LinearLayout[@index='{}']//android.widget.TextView"
                              "[contains(@resource-id, 'audio_parse_container')]".format(index))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_result_analysis_text_page(self, index):
         """结果页单选解析内容检查点"""
         locator = (By.XPATH, "//android.widget.LinearLayout[@index='{}']//android.widget.TextView"
                              "[contains(@resource-id, 'analysis_text')]".format(index))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def analysis_text(self):
         """解析内容"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'analysis_text')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'analysis_text')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def analysis_audio_btn(self):
         """解析内容"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'analysis_audio')
-        return ele
+        locator = (By.ID, self.id_type() + 'analysis_audio')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def right_choice(self):
         """正确选项内容"""
-        ele = self.driver.find_element_by_xpath('//*[@content-desc="right"]/following-sibling::android.widget.TextView')
-        return ele.text
+        locator = (By.XPATH, '//*[@content-desc="right"]/following-sibling::android.widget.TextView')
+        return self.wait.wait_find_element(locator).text
 
     # 听后选择  音频播放按钮
     @teststep
     def voice_button(self):
         """声音按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'exo_play')
-        return ele
+        locator = (By.ID, self.id_type() + 'exo_play')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def get_question_by_bank_index(self, index):
-        question = self.driver.find_element_by_xpath("//android.widget.LinearLayout[@index='{}']/android.widget.TextView"
-                                                     "[contains(@resource-id, 'question')]".format(index))
-        return question
+        locator = (By.XPATH, "//android.widget.LinearLayout[@index='{}']/android.widget.TextView"
+                             "[contains(@resource-id, 'question')]".format(index))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def get_opt_text_by_index(self, index):
         """根据索引查询选项内容"""
-        options = self.driver.find_elements_by_xpath("//android.widget.LinearLayout[@index='{}']/android.view.ViewGroup//android.widget.TextView"
-                                                     "[contains(@resource-id, 'tv_item')]".format(index))
-        return options
+        locator = (By.XPATH, "//android.widget.LinearLayout[@index='{}']/android.view.ViewGroup//"
+                             "android.widget.TextView[contains(@resource-id, 'tv_item')]".format(index))
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def get_opt_char_by_index(self, index):
         """根据索引查询选项索引"""
-        chars = self.driver.find_elements_by_xpath("//android.widget.LinearLayout[@index='{}']/android.view.ViewGroup//android.widget.TextView"
-                                                   "[contains(@resource-id, 'tv_char')]".format(index))
-        return chars
+        locator = (By.XPATH, "//android.widget.LinearLayout[@index='{}']/android.view.ViewGroup//"
+                             "android.widget.TextView[contains(@resource-id, 'tv_char')]".format(index))
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def get_analysis_text_by_index(self, index):
-        analysis = self.driver.find_element_by_xpath("//android.widget.LinearLayout[@index='{}']/android.widget.LinearLayout/"
-                                                     "android.view.ViewGroup//android.widget.TextView"
-                                                     "[contains(@resource-id, 'analysis_text')]".format(index))
-        return analysis.text
+        locator = (By.XPATH, "//android.widget.LinearLayout[@index='{}']/android.widget.LinearLayout/"
+                             "android.view.ViewGroup//android.widget.TextView"
+                             "[contains(@resource-id, 'analysis_text')]".format(index))
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def get_analysis_audio_by_index(self, index):
-        analysis = self.driver.find_element_by_xpath("//android.widget.LinearLayout[@index='{}']/android.widget.LinearLayout/"
-                                                     "android.view.ViewGroup//android.widget.TextView"
-                                                     "[contains(@resource-id, 'audio_parse_container')]".format(index))
-        return analysis
+        locator = (By.XPATH, "//android.widget.LinearLayout[@index='{}']/android.widget.LinearLayout/"
+                             "android.view.ViewGroup//android.widget.TextView"
+                             "[contains(@resource-id, 'audio_parse_container')]".format(index))
+        return self.wait.wait_find_element(locator)
 
     # 试卷部分需要根据文本查询选项是否被选中
     # @teststep
@@ -147,7 +148,7 @@ class SingleChoiceGame(GameCommonEle):
         total_count = self.rest_bank_num()
         for x in range(total_count):
             self.next_btn_judge('false', self.fab_next_btn)
-            ques = self.question()[0].text
+            ques = self.question().text
             print('问题：', ques)
 
             opt_char = self.opt_char()

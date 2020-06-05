@@ -9,14 +9,14 @@ from app.honor.student.user_center.object_page.change_image_page import ChangeIm
 from app.honor.student.user_center.object_page.user_Info_page import UserInfoPage
 from app.honor.student.user_center.object_page.user_center_page import UserCenterPage
 from conf.base_page import BasePage
-from conf.decorator import setup, teardown, testcase
+from conf.decorator import setup, teardown
 from utils.assert_func import ExpectingTest
 from utils.screen_shot import ScreenShot
 from utils.toast_find import Toast
 
 
-class FromAlbumChangeAvatar(unittest.TestCase):
-    """相册修改头像"""
+class TakePhotoChangeAvatar(unittest.TestCase):
+    """拍照修改头像 -- 重拍后保存"""
 
     @classmethod
     @setup
@@ -31,6 +31,7 @@ class FromAlbumChangeAvatar(unittest.TestCase):
         cls.change_image = ChangeImage()
         cls.screen_shot = ScreenShot()
         BasePage().set_assert(cls.base_assert)
+        cls.login_page.app_status()
 
     @teardown
     def tearDown(self):
@@ -39,13 +40,9 @@ class FromAlbumChangeAvatar(unittest.TestCase):
 
     def run(self, result=None):
         self.result = result
-        super(FromAlbumChangeAvatar, self).run(result)
+        super(TakePhotoChangeAvatar, self).run(result)
 
-
-    @testcase
     def test_change_image(self):
-        self.login_page.app_status()  # 判断APP当前状态
-
         if self.home.wait_check_home_page():
             self.home.click_tab_profile()  # 进入首页后点击‘个人中心’按钮
 
@@ -61,21 +58,23 @@ class FromAlbumChangeAvatar(unittest.TestCase):
                     self.user_info.click_image()  # 点击头像条目，进入设置页面
                     if self.home.wait_check_tips_page():
                         self.home.tips_title()  # 弹框信息
-                        self.user_info.click_album()  # 从相册选择
+                        self.user_info.click_photograph()
 
-                        self.change_image.album_upload_save()  # 上传照片具体操作
-                        if self.user_info.wait_check_page():
-                            print('choose success')
+                        if self.change_image.photo_upload_retake():  # 页面检查点
+                            if self.user_info.wait_check_page():
+                                print('choose retake success')
+                            else:
+                                print('choose retake failed')
+                                # # 获取修改后的头像截图
+                                # image2 = self.user_info.image()
+                                # result = self.screen_shot.same_as_screenshot(image2, t)
+                                # self.assertTrue(result)
                         else:
-                            # # 获取修改后的头像截图
-                            # image2 = self.user_info.image()
-                            # result = self.screen_shot.same_as_screenshot(image2, t)
-                            # self.assertTrue(result)
-                            print('choose failed')
+                            print('模拟器不具备拍照功能')
 
                         self.user_info.back_up()
                     else:
-                        print('未进入选择相册页面')
+                        print('未进入拍照页面')
                 else:
                     print('未进入个人信息页面')
         else:

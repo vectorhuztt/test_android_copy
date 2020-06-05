@@ -50,7 +50,7 @@ class ApplyVanclass(unittest.TestCase):
             self.home.click_test_vanclass()  # 班级tab
             if self.van.wait_check_page():  # 页面检查点
 
-                if self.van.empty_tips():  # 暂无数据
+                if self.van.wait_check_empty_tips():  # 暂无数据
                     print('暂无班级')
                 else:  # 已有班级
                     print('已有班级:')
@@ -172,7 +172,7 @@ class ApplyVanclass(unittest.TestCase):
             if self.van.wait_check_page():
                 self.apply_vanclass_operate(class_datas)
 
-            if self.van.wait_check_apply_page(5):  # 页面检查点
+            if self.van.wait_check_apply_page():  # 页面检查点
                 if i == 0:
                     ele = self.van.all_element()
                     print(ele[1][1], self.van.class_name_modify())

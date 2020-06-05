@@ -8,67 +8,63 @@ from app.honor.student.word_book_rebuild.object_page.word_rebuild_sql_handler im
 from conf.base_page import BasePage
 from conf.decorator import teststep
 from conf.base_config import GetVariable as gv
+from utils.wait_element import WaitElement
 
 
 class ProgressPage(BasePage):
     def __init__(self):
         self.common = WordDataHandlePage()
+        self.wait = WaitElement()
 
     @teststep
     def wait_check_progress_page(self):
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'单词本进度')]")
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_sys_label_page(self):
-        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'{}')]".format(gv.GRADE + ' （系统）'))
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'{}')]".format('三年级 （系统）'))
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def word_progress_icon(self):
         """词书进度"""
-        self.driver.\
-            find_element_by_id(self.id_type() + 'word_statistics')\
-            .click()
+        locator = (By.ID, self.id_type() + 'word_statistics')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def first_turn(self):
         """一轮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'first_time').text
-        print(ele, end='，')
+        locator = (By.ID, self.id_type() + 'first_time')
+        ele = self.wait.wait_find_element(locator)
+        print(ele.text, end='，')
 
     @teststep
     def third_turn(self):
         """三轮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'three_time').text
-        print(ele, end='，')
+        locator = (By.ID, self.id_type() + 'three_time')
+        ele = self.wait.wait_find_element(locator)
+        print(ele.text, end='，')
 
     @teststep
     def total(self):
         """总数"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'total').text
-        print(ele)
+        locator = (By.ID, self.id_type() + 'total')
+        ele = self.wait.wait_find_element(locator)
+        print(ele.text)
 
     @teststep
     def label_name(self):
         """标签名称"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'name')
-        return ele
+        locator = (By.ID, self.id_type() + 'name')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def word_statistics(self, name):
         """单词数据"""
-        ele = self.driver.find_element_by_xpath("//android.widget.TextView[contains(@text,'{}')]/following-sibling::"
-                                                "android.widget.TextView".format(name))
-        return ele.text
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'{}')]/following-sibling::"
+                             "android.widget.TextView".format(name))
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def find_pencil_icon(self):

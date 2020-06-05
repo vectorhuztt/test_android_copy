@@ -20,26 +20,25 @@ class SentenceStrengthenGame(SentenceLinkGame):
     def wait_check_sentence_page(self):
         """强化炼句页面检查点"""
         locator = (By.ID, '{}rich_text'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_correct_answer_page(self):
         """检查是否出现正确答案页面"""
         locator = (By.ID, '{}correct'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def sentence_explain(self):
         """文章"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'explain')
-        return ele.text
-
+        locator = (By.ID, self.id_type() + 'explain')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def right_answer(self):
         """正确答案"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'correct')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'correct')
+        return self.wait.wait_find_element(locator).text
 
 
     @teststep
@@ -52,8 +51,9 @@ class SentenceStrengthenGame(SentenceLinkGame):
                 time.sleep(0.5)
                 Keyboard().games_keyboard('enter')
         else:
-            input_item = self.get_rich_text_input_count()
-            for j in range(input_item):
+            input_count = self.get_rich_text_input_count()
+            print('页面需要输入栏个数：', input_count)
+            for j in range(input_count):
                 random_str = random.sample(string.ascii_letters, random.randint(2, 4))  # 随机输入2个字母
                 for x in random_str:
                     Keyboard().games_keyboard(x)

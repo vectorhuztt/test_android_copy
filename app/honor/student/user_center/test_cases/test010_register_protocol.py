@@ -26,6 +26,7 @@ class RegisterProtocol(unittest.TestCase):
         cls.setting = Setting()
         cls.protocol = ProtocolPage()
         BasePage().set_assert(cls.base_assert)
+        cls.login.app_status()
 
     @teardown
     def tearDown(self):
@@ -39,8 +40,6 @@ class RegisterProtocol(unittest.TestCase):
 
     @testcase
     def test_register_protocol(self):
-        self.login.app_status()  # 判断APP当前状态
-
         if self.home.wait_check_home_page():
             self.home.click_tab_profile()  # 进入首页后点击‘个人中心’按钮
 

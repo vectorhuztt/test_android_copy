@@ -20,102 +20,91 @@ class SpellWordGame(GameCommonEle):
     def wait_check_normal_spell_page(self):
         """单词拼写(默写模式)页面检查点"""
         locator = (By.ID, self.id_type() + "underline")
-        return self.get_wait_check_page_result(locator, timeout=10)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_tv_word_or_random_page(self):
         """单词拼写（随机模式）页面检查点"""
         locator = (By.ID, self.id_type() + "tv_word")
-        return self.get_wait_check_page_result(locator, timeout=10)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_right_answer_page(self):
         """正确单词页面检查点"""
         locator = (By.ID, self.id_type() + "tv_answer")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_hint_page(self):
         """默写模式页面检查点"""
         locator = (By.ID, self.id_type() + "hint")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_hint_word_page(self):
         """提示字母页面检查点"""
         locator = (By.ID, self.id_type() + "tv_word")
-        return self.get_wait_check_page_result(locator, timeout=3)
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def word_explain(self):
         """拼写翻译"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'tv_explain')
-        return ele
+        locator = (By.ID, self.id_type() + "tv_explain")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def hint_btn(self):
         """提示按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'hint')
-        return ele
+        locator = (By.ID, self.id_type() + "hint")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def spell_word(self):
         """拼写单词"""
-        word = self.driver.find_element_by_id(self.id_type() + 'tv_word')
-        return word
+        locator = (By.ID, self.id_type() + "tv_word")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def right_answer_word(self):
         """正确答案"""
-        word = self.driver.find_element_by_id(self.id_type() + 'tv_answer')
-        return word.text
+        locator = (By.ID, self.id_type() + "tv_answer")
+        return self.wait.wait_find_element(locator).text
 
     # 结果页答案对比
-
     @teststep
     def group_word(self, index):
         """结果页一组单词"""
-        ele = self.driver.find_element_by_xpath(
-            '//*[@content-desc="{}" and contains(@resource-id, "item_container")]/'
-            'android.widget.TextView[contains(@resource-id, "word")]'.format(index))
-        return ele.text
+        locator = (By.XPATH, '//*[@content-desc="{}" and contains(@resource-id, "item_container")]/'
+                             'android.widget.TextView[contains(@resource-id, "word")]'.format(index))
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def group_explain(self, index):
         """结果页 解释"""
-        ele = self.driver.find_element_by_xpath(
-            '//*[@content-desc="{}" and contains(@resource-id, "item_container")]/'
-            'android.widget.TextView[contains(@resource-id, "explain")]'.format(index))
-        return ele.text
+        locator = (By.XPATH,  '//*[@content-desc="{}" and contains(@resource-id, "item_container")]/'
+                              'android.widget.TextView[contains(@resource-id, "explain")]'.format(index))
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def group_word_voice(self, index):
         """结果页单词喇叭"""
-        ele = self.driver.find_element_by_xpath(
-            '//*[@content-desc="{}" and contains(@resource-id, "item_container")]/'
-            'android.widget.ImageView[contains(@resource-id, "audio")]'.format(index))
-        return ele
+        locator = (By.XPATH, '//*[@content-desc="{}" and contains(@resource-id, "item_container")]/'
+                             'android.widget.ImageView[contains(@resource-id, "audio")]'.format(index))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def group_right_wong_icon(self, index):
         """结果页 单词对错标识"""
-        ele = self.driver.find_element_by_xpath(
-            '//*[@content-desc="{}" and contains(@resource-id, "item_container")]/'
-            'android.widget.ImageView[contains(@resource-id, "result")]'.format(index))
-        return ele
-
-    @teststep
-    def normal_word_spell_hint_word_check(self):
-        """单词默写游戏页面元素检查"""
-        if self.wait_check_hint_word_page():  # 校验点击提示或输入前, 是否出现单词
-            self.base_assert.except_error('未点击提示或未输入字符出现默写单词')
+        locator = (By.XPATH,  '//*[@content-desc="{}" and contains(@resource-id, "item_container")]'
+                              '/android.widget.ImageView[contains(@resource-id, "result")]'.format(index))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def word_spell_play_process(self, game_mode, do_right=False, right_answer=None):
         """单词拼写游戏做对操作"""
         if game_mode == 1:
             if do_right:
-                for i in range(1, len(right_answer)):
+                for i in range(len(right_answer)):
                     Keyboard().keyboard_operate(right_answer[i], i)
             else:
                 random_str = ''.join(random.sample(string.ascii_lowercase, random.randint(2, 5)))
@@ -145,8 +134,6 @@ class SpellWordGame(GameCommonEle):
         for x in range(total_count):
             self.rate_judge(total_count, x)
             self.next_btn_judge('false', self.fab_commit_btn)  # 判断下一题按钮状态
-            if game_mode:
-                self.normal_word_spell_hint_word_check()
             explain = self.word_explain().text
             print('解释：', explain)
 

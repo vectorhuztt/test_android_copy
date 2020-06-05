@@ -17,33 +17,24 @@ class StudySettingPage(UserCenterPage):
     def wait_check_study_setting_page(self):
         """学习设置页面检查点"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@text, "学习设置")]')
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_wordbook_study_setting_page(self):
         locator = (By.XPATH, '//android.widget.TextView[contains(@text, "单词本学习设置")]')
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def study_setting(self):
         """单词本"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'study_setting')
-        return ele
+        locator = (By.ID, self.id_type() + 'study_setting')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def get_study_setting_side(self):
         """获取学习设置外边框"""
-        ele = self.driver.find_elements_by_xpath('//android.support.v7.widget.RecyclerView/android.view.View')
-        return ele
-
+        locator = (By.XPATH, '//android.support.v7.widget.RecyclerView/android.view.View')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def check_study_model_operate(self, study_model=1):

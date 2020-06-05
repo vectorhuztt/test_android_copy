@@ -1,9 +1,5 @@
-import random
-import time
 from app.honor.student.games.choice_vocab import VocabChoiceGame
-from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.test_paper.object_page.answer_page import AnswerPage
-from app.honor.student.test_paper.object_page.exam_sql_handle import DataPage
 from conf.decorator import teststep, teststeps
 
 

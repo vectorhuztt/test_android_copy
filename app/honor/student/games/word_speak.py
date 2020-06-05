@@ -17,75 +17,77 @@ class WordSpeakGame(SpellWordGame):
     def wait_check_word_speak_page(self):
         """单词跟读页面检查点"""
         locator = (By.ID, self.id_type() + 'game_record_button')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_max_time_tip_page(self):
         """五次过后文本提示"""
         locator = (By.ID, self.id_type() + 'result_hint')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_explain_page(self):
         """解释页面检查点"""
         locator = (By.ID, self.id_type() + 'hint')
-        return self.get_wait_check_page_result(locator, timeout=3)
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def wait_check_speak_word_result_page(self):
         """单词跟读结果页页面检查点"""
         locator = (By.ID, self.id_type() + 'game_name')
-        return self.get_wait_check_page_result(locator, timeout=3)
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def speak_button(self):
         """说话按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'game_record_button')
-        return ele
+        locator = (By.ID, self.id_type() + 'game_record_button')
+        return self.wait.wait_find_element(locator)
+
 
     @teststep
     def audio_btn(self):
         """喇叭按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'fab_play')
-        return ele
+        locator = (By.ID, self.id_type() + 'fab_play')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def speak_word(self):
         """跟读单词"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'english')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'english')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def word_explain(self):
         """单词解释"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'hint')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'hint')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def max_time_hint(self):
         """次数限制后的文本提示"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'result_hint')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'result_hint')
+        return self.wait.wait_find_element(locator).text
 
     # 结果页
     @teststep
     def user_name(self):
         """用户"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'name')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'name')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def group_word_check(self, index):
         """结果页 单词对错标识"""
-        ele = self.driver.find_element_by_xpath('//*[@content-desc="{}" and contains(@resource-id, "item_container")]/'
-                                                'android.widget.CheckBox[contains(@resource-id, "check")]'.format(index))
-        return ele
+        locator = (By.XPATH, '//*[@content-desc="{}" and contains(@resource-id, "item_container")]/'
+                             'android.widget.CheckBox[contains(@resource-id, "check")]'.format(index))
+        return self.wait.wait_find_element(locator)
+
 
     @teststep
     def again_btn(self):
         """再练一遍按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'again')
-        return ele
+        locator = (By.ID, self.id_type() + 'again')
+        return self.wait.wait_find_element(locator)
 
     @teststeps
     def word_speak_game_process(self, fq, half_exit, again_words=None):

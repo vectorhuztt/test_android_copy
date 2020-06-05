@@ -1,6 +1,4 @@
-import random
 from app.honor.student.games.word_guess import GuessWordGame
-from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.test_paper.object_page.answer_page import AnswerPage
 from conf.decorator import teststeps
 

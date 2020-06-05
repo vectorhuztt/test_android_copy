@@ -16,32 +16,32 @@ class CompleteArticleGame(GameCommonEle):
     def wait_check_complete_article_page(self):
         """补全文章页面检查点"""
         locator = (By.ID, '{}rich_text'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_opt_page(self, opt_text):
         """选项页面检查点"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@text, "{}")]'.format(opt_text))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_opt_text_by_index(self, index):
         """判断当前索引下的选项是否在页面中"""
         locator = (By.XPATH, '//android.widget.LinearLayout[@index="{}"]/android.widget.LinearLayout'.format(index))
-        return self.get_wait_check_page_result(locator, timeout=3)
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def wait_check_select_opt_page(self, right_answer):
         locator = (By.XPATH, '//android.widget.TextView[@text="{}"]'.format(right_answer))
-        return self.get_wait_check_page_result(locator, timeout=3)
+        return self.wait.wait_check_element(locator, timeout=3)
 
 
     @teststep
     def result_opt_char(self, opt_text):
         """结果页的选项"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="{}"]/preceding-sibling::android.widget.TextView[contains('
-                                                '@resource-id, "tv_char")]'.format(opt_text))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]/preceding-sibling::android.widget.TextView'
+                             '[contains(@resource-id, "tv_char")]'.format(opt_text))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def complete_article_play_process(self, do_right=False, right_answer=None, timer=None):

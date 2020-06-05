@@ -4,6 +4,7 @@ import unittest
 from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.login.object_page.login_page import LoginPage
 from app.honor.student.login.test_data.mine_account import phone_data
+from app.honor.student.punch_activity.object_page.punch_page import PunchActivityPage
 from app.honor.student.user_center.object_page.user_center_page import Setting
 from conf.base_page import BasePage
 from conf.decorator import setup, teardown, testcase, teststeps
@@ -22,6 +23,7 @@ class LoginPhone(unittest.TestCase):
         cls.base_assert = ExpectingTest(cls, cls.result)
         cls.login = LoginPage()
         cls.home = HomePage()
+        cls.punch = PunchActivityPage()
         cls.set = Setting()
         BasePage().set_assert(cls.base_assert)
 
@@ -37,10 +39,11 @@ class LoginPhone(unittest.TestCase):
     @testcase
     def test_login_phone(self):
         # 判断APP当前状态
+        self.punch.close_home_activity_tip()
         if self.home.wait_check_home_page():  # 在主界面
             print('已登录')
             self.set.logout_operate()  # 退出登录
-        elif self.login.wait_check_page():  # 在登录界面
+        elif self.login.wait_check_login_page():  # 在登录界面
             print('在登录界面')
         else:
             print('在其他页面')
@@ -49,7 +52,7 @@ class LoginPhone(unittest.TestCase):
             if self.home.wait_check_home_page():  # 在主界面
                 print('已登录')
                 self.set.logout_operate()  # 退出登录
-            elif self.login.wait_check_page():  # 在登录界面
+            elif self.login.wait_check_login_page():  # 在登录界面
                 print('在登录界面')
         
         self.login_operate_phone()  # 具体操作
@@ -57,9 +60,9 @@ class LoginPhone(unittest.TestCase):
     @teststeps
     def login_operate_phone(self):
         """登录 操作流程 - 测试手机号"""
-        if self.login.wait_check_page():
+        if self.login.wait_check_login_page():
             for i in range(len(phone_data)):
-                if self.login.wait_check_page():  # 页面检查点
+                if self.login.wait_check_login_page():  # 页面检查点
                     phone = self.login.input_username()
                     pwd = self.login.input_password()
 
@@ -69,18 +72,19 @@ class LoginPhone(unittest.TestCase):
                     pwd.send_keys(phone_data[i]['password'])  # 输入密码
                     print('密码:', phone_data[i]['password'])
 
-                    self.login.login_button()  # 登录按钮
+                    self.login.login_button().click()  # 登录按钮
                     if len(phone_data[i]) == 3:
                         if not Toast().find_toast(phone_data[i]['assert']):  # toast判断
                             self.login.base_assert.except_error('Error- 未获取到toast' + phone_data[i]['assert'])
-                        if self.login.wait_check_page():
+                        if self.login.wait_check_login_page():
                             print('登录失败')
                     else:
+                        self.punch.close_home_activity_tip()
                         if self.home.wait_check_home_page():
                             print('登录成功')
                             if i != len(phone_data)-1:
                                 self.set.logout_operate()
-                        elif self.login.wait_check_page():
+                        elif self.login.wait_check_login_page():
                             print('登录失败')
                         elif self.login.wait_check_register_page():
                             print('已注册学生账号')

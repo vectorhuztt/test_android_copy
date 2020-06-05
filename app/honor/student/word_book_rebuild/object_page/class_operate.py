@@ -13,28 +13,26 @@ from app.honor.student.word_book_rebuild.test_data.account import STU_ACCOUNT
 from conf.base_page import BasePage
 from conf.decorator import teststep
 from utils.reset_phone_find_toast import verify_find
+from utils.wait_element import WaitElement
 
 
 class QuitAddClass(BasePage):
     def __init__(self):
         self.home = HomePage()
         self.van = VanclassPage()
+        self.wait = WaitElement()
 
     @teststep
     def wait_check_vanclass_page(self):
         """班级页面检查点"""
         locator = (By.CLASS_NAME, self.id_type() + "class_name")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_any_elements_located(locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def class_num(self):
         """班号"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'class_no')
-        return ele
+        locator = (By.ID, self.id_type() + 'class_no')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def quit_all_class_operate(self):

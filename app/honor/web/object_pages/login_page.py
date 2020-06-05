@@ -6,87 +6,69 @@
 import time
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
-from app.honor.web.object_pages.base import BaseDriverPage
+from conf.base_web import BaseDriverPage
 from app.honor.web.test_data.teacher_account import TeacherAccount
 from conf.decorator import teststeps, teststep
+from utils.wait_element import WaitElement
 
 
 class LoginWebPage(BaseDriverPage):
-    @teststeps
-    def wait_check_rocket_page(self):
-        """判断是否有小火箭页面"""
-        locator = (By.CLASS_NAME, "rocket-box")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+    wait = WaitElement()
 
     @teststep
     def wait_check_login_page(self):
         """登录页面检查点"""
         locator = (By.CLASS_NAME, "login-form")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_identity_page(self):
         """身份选择页面检查点"""
         locator = (By.CLASS_NAME, "identity-form")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def close_page_btn(self):
         """关闭页面"""
-        ele = self.driver.find_element_by_class_name('icon-cross')
-        return ele
+        locator = (By.CLASS_NAME, 'icon-cross')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def username(self):
         """用户名"""
-        username = self.driver.find_element_by_xpath('//*[@class="login-form"]/div[1]/input')
-        return username
+        locator = (By.CSS_SELECTOR, '.login-form input:nth-child(1)')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def password(self):
         """密码"""
-        password = self.driver.find_element_by_xpath('//*[@class="login-form"]/div[2]/div/input')
-        return password
+        locator = (By.CSS_SELECTOR, '.login-form input:nth-child(2)')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def login_btn(self):
         """登录"""
-        login_btn = self.driver.find_element_by_xpath('//*[@class="login-form"]/button')
-        return login_btn
+        locator = (By.CSS_SELECTOR, '.login-form  .btn')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def teacher_ele(self):
         """自由/在编教师"""
-        ele = self.driver.find_element_by_xpath('//*[contains(text(),"在编教师")]')
-        return ele
+        locator = (By.CSS_SELECTOR, '.identity-form  .select img[alt$="教师"]')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def head_pic_icon(self):
         """头像"""
-        ele = self.driver.find_element_by_css_selector('.menu .name')
-        return ele
+        locator = (By.CSS_SELECTOR, '.menu .name')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def logout_btn(self):
         """退出"""
-        ele = self.driver.find_elements_by_css_selector('.menu .list a')
-        return ele[1]
-
+        locator = (By.CSS_SELECTOR, '.menu .list a')
+        return self.wait.wait_find_elements(locator)[1]
 
     @teststep
     def login_operate(self, teacher_account=TeacherAccount.Account[-1][0],

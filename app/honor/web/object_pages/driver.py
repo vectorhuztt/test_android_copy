@@ -5,7 +5,7 @@
 # -------------------------------------------
 from selenium import webdriver
 
-from app.honor.web.object_pages.base import BaseDriverPage
+from conf.base_web import BaseDriverPage
 from conf.base_config import GetVariable as gv
 
 

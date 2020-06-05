@@ -6,28 +6,28 @@
 import time
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 
 from app.honor.student.login.object_page.home_page import HomePage
 from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
 from utils.toast_find import Toast
+from utils.wait_element import WaitElement
 
 
 class LevelPage(BasePage):
-    def __init__(self):
-        self.home = HomePage()
+    wait = WaitElement()
+    home = HomePage()
 
     @teststep
     def wait_check_listening_level_page(self):
         locator = (By.XPATH, '//android.widget.TextView[contains(@text,"听力等级")]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_level_page(self, level_name):
         """最后一个等级页面检查点"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@text,"{}")]'.format(level_name))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_start_button(self, back_name):
@@ -39,28 +39,26 @@ class LevelPage(BasePage):
 
     @teststep
     def back_name(self):
-        ele = self.driver.find_elements_by_id(self.id_type() + 'back_name')
-        return ele
+        locator = (By.ID, self.id_type() + 'back_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def play_voice_button(self, back_name):
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="{}"]/'
-                                                'following-sibling::android.widget.LinearLayout/'
-                                                'android.widget.ImageView'.format(back_name))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]/following-sibling::android.widget.'
+                             'LinearLayout/android.widget.ImageView'.format(back_name))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def level_name(self, back_name):
-        ele = self.driver.find_elements_by_xpath('//android.widget.TextView[@text="{}"]/../following-sibling'
-                                                 '::android.widget.LinearLayout/android.widget.TextView'
-                                                 .format(back_name))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]/../following-sibling::android.widget.LinearLayout'
+                             '/android.widget.TextView'.format(back_name))
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def start_button(self, back_name):
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="{}"]/../following-sibling'
-                                                '::android.widget.TextView'.format(back_name))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]/../following-sibling'
+                             '::android.widget.TextView'.format(back_name))
+        return self.wait.wait_find_element(locator)
 
 
     @teststeps
@@ -75,7 +73,7 @@ class LevelPage(BasePage):
                 else:
                     tips.append(content)
                     print([y.text for y in self.level_name(content)])
-                    if not self.wait_start_button(content):
+                    if i == len(self.back_name()) - 1:
                         self.home.screen_swipe_up(0.5, 0.9, 0.7, 1000)
 
                     if self.start_button(content).text == '练习中...':
@@ -84,7 +82,7 @@ class LevelPage(BasePage):
                         self.play_voice_button(content).click()
                         self.start_button(content).click()
                         if Toast().find_toast('听力等级设置成功'):
-                            if self.start_button(content).text != '练习中...':
+                            if self.start_button( ).text != '练习中...':
                                 self.base_assert.except_error('Error-- 点击开始后文字未发生改变')
                         else:
                             self.base_assert.except_error('未发现等级设置成功提示')

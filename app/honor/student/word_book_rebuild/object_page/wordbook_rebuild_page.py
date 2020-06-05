@@ -22,6 +22,7 @@ from app.honor.student.word_book_rebuild.object_page.games.vocabulary_choose_pag
 from app.honor.student.word_book_rebuild.object_page.games.word_match_page import MatchingWord
 from conf.base_page import BasePage
 from conf.decorator import teststep
+from utils.wait_element import WaitElement
 
 
 class WordBookRebuildPage(BasePage):
@@ -30,60 +31,58 @@ class WordBookRebuildPage(BasePage):
         super().__init__()
         self.data = WordDataHandlePage()
         self.public = WorldBookPublicPage()
+        self.wait = WaitElement()
         self.data_dir = 'app/honor/student/word_book_rebuild/test_data/'
 
     @teststep
     def wait_check_start_page(self):
         """将'你准备好了吗?'作为 单词本首页 页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text, '你准备好了吗?')]")
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_continue_page(self):
         """单词继续学习页面检查点"""
         locator = (By.ID, self.id_type() + "word_continue")
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_start_wrong_again_page(self):
         """错题题再练页面"""
         locator = (By.ID, self.id_type() + "word_continue")
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_game_title_page(self):
         """游戏标题页面检查点"""
         locator = (By.ID, self.id_type() + 'tv_title')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def word_start_button(self):  # Go标志按钮
-        self.driver \
-            .find_element_by_id(self.id_type() + "word_start")\
-            .click()
+        locator = (By.ID, self.id_type() + "word_start")
+        self.wait.wait_find_element(locator).click()
         time.sleep(3)
 
     @teststep
     def word_continue_button(self):
         """继续练习按钮"""
-        self.driver.\
-            find_element_by_id(self.id_type() + 'word_continue')\
-            .click()
+        locator = (By.ID, self.id_type() + "word_continue")
+        self.wait.wait_find_element(locator).click()
         time.sleep(3)
 
     @teststep
     def total_word(self):
         """已背单词 数"""
-        word = self.driver \
-            .find_element_by_id(self.id_type() + "total").text
-        return int(word)
+        locator = (By.ID, self.id_type() + 'total')
+        ele = self.wait.wait_find_element(locator)
+        return int(ele.text)
 
     @teststep
     def confirm_btn(self):
         """错题再练开始练习按钮"""
-        ele = self.driver \
-            .find_element_by_id(self.id_type() + "confirm")
-        return ele
+        locator = (By.ID, self.id_type() + 'confirm')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def write_words_to_file(self, file_name, file_value):

@@ -1,10 +1,7 @@
 import re
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 
-from app.honor.student.games.all_game_init import AllGameClass
-from app.honor.student.games.word_match_new import LinkWordGame
 from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.test_paper.object_page.answer_page import AnswerPage
 from app.honor.student.test_paper.object_page.games.blank_cloze import BlankCloze
@@ -25,90 +22,85 @@ from app.honor.student.test_paper.object_page.games.word_match import WordMatch
 from app.honor.student.test_paper.object_page.games.word_spell import WordSpell
 from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
+from utils.wait_element import WaitElement
 
 
 class ExamPage(BasePage):
     """试卷页面"""
-
-    def __init__(self):
-        self.home = HomePage()
-        self.game = VocabSelect()
-        self.answer = AnswerPage()
-        self.all_game = AllGameClass()
+    home = HomePage()
+    answer = AnswerPage()
+    wait = WaitElement()
 
     @teststep
     def wait_check_exam_title_page(self):
         """以 试卷的标题作为 页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'试卷')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_exam_counter_page(self):
         """以 做试卷时的计时作为 页面检查点"""
         locator = (By.ID, self.id_type() + "time_container")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_exam_confirm_page(self):
         """以 试卷确认的标题作为 页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'试卷确认')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_rank_page(self):
         """以 炫耀一下的text作为 页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'炫耀一下')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_end_page(self):
         """等待 滑到底提示"""
-        try:
-            self.driver.find_element_by_xpath('//android.widget.TextView[contains(@text,"到底啦 下拉刷新试试")]')
-            return True
-        except:
-            return False
+        locator = (By.XPATH, '//android.widget.TextView[contains(@text,"到底啦 下拉刷新试试")]')
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def exam_names(self):
         """试卷名称"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_name')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def finish_count(self):
         """完成人数"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_finishcount')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_finishcount')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def finish_status(self):
         """完成状态"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'rtv_mode')
-        return ele
+        locator = (By.ID, self.id_type() + 'rtv_mode')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def get_all_text(self):
         """获取所有文本"""
-        ele = self.driver.find_elements_by_class_name('android.widget.TextView')
-        return ele
+        locator = (By.CLASS_NAME, 'android.widget.TextView')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def click_start_exam_button(self):
         """点击 开始考试"""
-        self.driver.\
-            find_element_by_id(self.id_type() + 'start_write')\
-            .click()
+        locator = (By.ID, self.id_type() + 'start_write')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def index_group(self):
-        ele = self.driver.find_elements_by_id(self.id_type() + 'recyclerview')
-        return ele
+        locator = (By.ID, self.id_type() + 'recyclerview')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def close_answer(self):
         """关闭答题卷页面"""
-        self.driver.find_element_by_id(self.id_type() + 'answerclose').click()
+        locator = (By.ID, self.id_type() + 'answerclose')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def exam_back_to_home(self):
@@ -203,6 +195,7 @@ class ExamPage(BasePage):
                 index = 0
                 while index < len(tips):
                     title_list = [x.text for x in self.answer.question_titles()]       # 题型数组
+                    print(title_list)
                     if tips[index] in title_list:
                         first_index = self.answer.tip_index(tips[index])    # 题型的第一道题
                         ques_num = self.answer.ques_num(tips[index])          # 题数描述 （共*题）

@@ -8,95 +8,68 @@ from selenium.webdriver.common.by import By
 
 from conf.decorator import teststep, teststeps
 from conf.base_page import BasePage
+from utils.wait_element import WaitElement
 
 
 class HomePage(BasePage):
     """app主页面元素信息"""
+    wait = WaitElement()
+
     @teststeps
-    def wait_check_home_page(self):
+    def wait_check_home_page(self, is_raise=False):
         """以“做试卷”为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'做试卷')]")
-        try:
-            WebDriverWait(self.driver, 20, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator, timeout=10)
 
     @teststeps
     def wait_check_expert_page(self):
         """以“做试卷”为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'通知')]")
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
 
     @teststeps
     def wait_check_word_title(self):
         """将'单词本'作为 单词本首页 页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'单词本')]")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
-
-    @classmethod
-    def add_base_assert(cls, base_assert):
-        super().set_assert(base_assert)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def click_hk_tab(self, index):
         """以“口语练习、做单词、做习题、做试卷” 的id"""
-        self.driver\
-            .find_elements_by_id(self.id_type() + "notice")[index - 1] \
-            .click()
+        locator = (By.ID, self.id_type() + 'notice')
+        self.wait.wait_find_elements(locator)[index-1].click()
 
     @teststep
     def homework(self):
         """以“口语、作业或者试卷列表内条目”的id为依据"""
-        ele = self.driver \
-            .find_elements_by_id(self.id_type() + "tv_homework_name")
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_homework_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststeps
     def end_judge(self):
         """元素：到底啦 下拉刷新试试"""
-        try:
-            self.driver \
-                .find_element_by_xpath("//android.widget.TextView[contains(@text,'到底啦 下拉刷新试试')]")
-            return True
-        except Exception:
-            return False
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'到底啦 下拉刷新试试')]")
+        return self.wait.wait_check_element(locator)
 
     # 关于图书馆的定位
     @teststep
     def wait_check_recommend_more_btn_page(self):
         """推荐栏的发现更多按钮"""
         locator = (By.XPATH, "//*[@text='推荐']/following-sibling::android.widget.TextView")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_mine_more_btn_page(self):
         """推荐栏的发现更多按钮"""
         locator = (By.XPATH, "//*[@text='我的阅读']/following-sibling::android.widget.TextView")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def check_more(self):
         """查看更多"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'more')
-        return ele
+        locator = (By.ID, self.id_type() + 'more')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def home_school_name(self):
@@ -108,55 +81,48 @@ class HomePage(BasePage):
     @teststep
     def tab_books(self, tab_name):
         """推荐书籍"""
-        ele = self.driver.find_elements_by_xpath('//*[@text="{}"]/../following-sibling::'
-                                                 'android.widget.FrameLayout/android.widget.LinearLayout/'
-                                                 'android.widget.LinearLayout'.format(tab_name))
+        locator = (By.XPATH, '//*[@text="{}"]/../following-sibling::android.widget.FrameLayout/'
+                             'android.widget.LinearLayout/android.widget.LinearLayout'.format(tab_name))
+        ele = self.wait.wait_find_elements(locator)
         text = [x.find_element_by_xpath('.//android.widget.TextView').text for x in ele]
         return text
-
 
     # 公共元素- 底部四个tab元素：作业、试卷、个人中心、图书馆
     @teststep
     def click_tab_library(self):
         """下方图书馆Tab"""
-        self.driver.\
-            find_element_by_id(self.id_type() + 'tab_lib_icon')\
-            .click()
+        locator = (By.ID, self.id_type() + 'tab_lib_icon')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_tab_hw(self):
         """以“学习tab”的id为依据"""
-        self.driver\
-            .find_element_by_id(self.id_type() + 'tab_hw_icon')\
-            .click()
+        locator = (By.ID, self.id_type() + 'tab_hw_icon')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_test_vanclass(self):
         """以“班级tab”的id为依据"""
-        self.driver \
-            .find_element_by_id(self.id_type() + 'tab_class_icon')\
-            .click()
+        locator = (By.ID, self.id_type() + 'tab_class_icon')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_tab_profile(self):
         """以“个人中心tab”的id为依据"""
-        self.driver \
-            .find_element_by_id(self.id_type() + 'tab_profile')\
-            .click()
+        locator = (By.ID, self.id_type() + 'tab_profile')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_back_up_button(self):
         """以“返回按钮”的class name为依据"""
-        time.sleep(1)
-        ele = self.driver.find_element_by_accessibility_id("转到上一层级")
-        ele.click()
+        locator = (By.ACCESSIBILITY_ID, "转到上一层级")
+        self.wait.wait_find_element(locator).click()
 
     @teststeps
     def all_element(self):
         """页面内所有class name为android.widget.TextView的元素"""
-        ele = self.driver \
-            .find_elements_by_class_name("android.widget.TextView")
-        return ele
+        locator = (By.CLASS_NAME, "android.widget.TextView")
+        return self.wait.wait_find_elements(locator)
 
     # 温馨提示 页面
     @teststeps
@@ -165,69 +131,43 @@ class HomePage(BasePage):
         locator = (By.XPATH,
                    "//android.widget.TextView[contains(@resource-id,"
                    "'{}md_title')]".format(self.id_type()))
-        try:
-            WebDriverWait(self.driver, var, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def tips_title(self):
         """温馨提示title"""
-        item = self.driver \
-            .find_element_by_id(self.id_type() + "md_title").text
-        return item
+        locator = (By.ID, self.id_type() + 'md_title')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def tips_content(self):
         """温馨提示 具体内容"""
-        item = self.driver \
-            .find_element_by_id(self.id_type() + "md_content").text
-        print(item)
-        return item
-
-    @teststep
-    def never_notify(self):
-        """不再提醒"""
-        self.driver \
-            .find_element_by_id("com.vanthink.vanthinkteacher.debug:id/md_promptCheckbox") \
-            .click()
+        locator = (By.ID, self.id_type() + 'md_content')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def input(self):
         """输入框"""
-        ele = self.driver \
-            .find_element_by_id("android:id/input")
-        return ele
-
-    @teststep
-    def character_num(self):
-        """字符数"""
-        ele = self.driver \
-            .find_element_by_id("com.vanthink.vanthinkteacher.debug:id/md_minMax").text
-        print(ele)
-        return ele
+        locator = (By.ID, "android:id/input")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def cancel_button(self):
         """取消 按钮"""
-        self.driver \
-            .find_element_by_id(self.id_type() + "md_buttonDefaultNegative") \
-            .click()
+        locator = (By.ID, self.id_type() + "md_buttonDefaultNegative")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def commit_button(self):
         """确定 按钮"""
-        self.driver \
-            .find_element_by_id(self.id_type() + "md_buttonDefaultPositive") \
-            .click()
+        locator = (By.ID, self.id_type() + "md_buttonDefaultPositive")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def commit(self):
         """确定 按钮"""
-        ele = self.driver \
-            .find_element_by_id(self.id_type() + "md_buttonDefaultPositive")
-        return ele
+        locator = (By.ID, self.id_type() + "md_buttonDefaultPositive")
+        return self.wait.wait_find_element(locator)
 
     @teststeps
     def wait_activity(self):
@@ -235,10 +175,6 @@ class HomePage(BasePage):
         self.driver.implicitly_wait(2)
         activity = self.driver.current_activity
         return activity
-
-    @teststeps
-    def click_blank(self):
-        self.driver.tap([(self.get_window_size()[0] * 0.5, 100), ])
 
     @teststeps
     def homework_count(self):

@@ -10,7 +10,6 @@ from app.honor.student.user_center.object_page.user_center_page import UserCente
 from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.login.object_page.login_page import LoginPage
 from app.honor.web.object_pages.assign_word import AssignWord
-from app.honor.web.object_pages.driver import Driver
 from app.honor.student.word_book_rebuild.object_page.class_operate import QuitAddClass
 from app.honor.student.word_book_rebuild.object_page.word_rebuild_sql_handler import WordDataHandlePage
 from app.honor.student.word_book_rebuild.object_page.games.flash_card_page import FlashCard
@@ -20,6 +19,7 @@ from app.honor.student.word_book_rebuild.test_data.account import *
 from conf.base_page import BasePage
 from conf.decorator import setup, teardown, testcase
 from utils.assert_func import ExpectingTest
+from utils.web_driver import GetWebDriver
 
 
 @ddt
@@ -55,7 +55,7 @@ class HaveClass(unittest.TestCase):
         if self.home.wait_check_home_page():
             van_num = test_class_num.copy()
             QuitAddClass().apply_class_operate(van_num)
-            web_driver = Driver()
+            web_driver = GetWebDriver()
             web_driver.set_driver()
             AssignWord().assign_wordbook_operate(test_class_num, TEACHER_ACCOUNT[0], STU_PASSWORD)
             web_driver.quit_web()

@@ -20,8 +20,8 @@ class SpellingWord(SpellWordGame):
     @teststep
     def spell_right_word_operate(self, word):
         """单词拼写做对操作"""
-        self.hint_ele_operate(word)
-        self.key.games_keyboard('backspace')
+        # self.hint_ele_operate(word)
+        # self.key.games_keyboard('backspace')
         print('单词:', word)
         for j in range(0, len(word)):
             self.keyboard_operate(j, word[j])  # 点击键盘 具体操作

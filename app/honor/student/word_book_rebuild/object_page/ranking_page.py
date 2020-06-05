@@ -7,127 +7,118 @@ from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.word_book_rebuild.object_page.wordbook_rebuild_page import WordBookRebuildPage
 from conf.base_page import BasePage
 from conf.decorator import teststeps, teststep
+from utils.wait_element import WaitElement
 
 
 class RankingPage(BasePage):
     """单词本 - 排行榜"""
     def __init__(self):
         self.home = HomePage()
+        self.wait = WaitElement()
 
     @teststeps
     def wait_check_rank_page(self):
         """以“学生测试版”为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'学生测试版')]")
-        try:
-            WebDriverWait(self.driver, 4, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def total(self):
-        total_words = self.driver.find_element_by_id('{}total'.format(self.id_type())).text
-        return total_words
+        locator = (By.ID, self.id_type() + 'total')
+        ele = self.wait.wait_find_element(locator)
+        return ele.text
 
     @teststep
     def click_rank_icon(self):
         """点击排行榜图标"""
-        self.driver.find_element_by_id('{}rank'.format(self.id_type())).click()
+        locator = (By.ID, self.id_type() + 'rank')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def choose_class(self):
         """班级展示 及切换"""
-        self.driver \
-            .find_element_by_id("android:id/text1").click()
+        locator = (By.ID, "android:id/text1")
+        self.wait.wait_find_element(locator).click()
         time.sleep(2)
 
     @teststep
     def classes_ele(self):
         """班级展示 及切换"""
-        ele = self.driver \
-            .find_elements_by_id("android:id/text1")
-        return ele
+        locator = (By.ID, "android:id/text1")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def word_num(self):
         """单词数"""
-        ele = self.driver\
-            .find_element_by_id("{}tv_score".format(self.id_type())).text
-        return ele
+        locator = (By.ID, self.id_type() + "tv_score")
+        ele = self.wait.wait_find_element(locator)
+        return ele.text
 
     @teststep
     def word_type(self):
         """wording:词"""
-        ele = self.driver\
-            .find_element_by_id("{}type".format(self.id_type())).text
-        return ele
+        locator = (By.ID, self.id_type() + "type")
+        ele = self.wait.wait_find_element(locator)
+        return ele.text
 
     @teststep
     def share_button(self):
         """炫耀一下"""
-        self.driver \
-            .find_element_by_id(self.id_type() + 'share') \
-            .click()
+        locator = (By.ID, self.id_type() + "share")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def rank_num(self):
         """班级排名"""
-        ele = self.driver \
-            .find_element_by_id("{}tv_ranking".format(self.id_type()))
+        locator = (By.ID, self.id_type() + "tv_ranking")
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def order_num(self):
         """排名 数字"""
-        ele = self.driver \
-            .find_elements_by_id("{}tv_order".format(self.id_type()))
-        return ele
+        locator = (By.ID, self.id_type() + "tv_order")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def st_icon(self):
         """头像"""
-        ele = self.driver\
-            .find_elements_by_id("{}iv_head".format(self.id_type()))
-        return ele
+        locator = (By.ID, self.id_type() + "iv_head")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def st_name(self):
         """学生姓名"""
-        ele = self.driver \
-            .find_elements_by_id("{}tv_name".format(self.id_type()))
-        return ele
+        locator = (By.ID, self.id_type() + "tv_name")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def st_score(self):
         """提示title"""
-        item = self.driver \
-            .find_elements_by_id("{}tv_score".format(self.id_type()))
-        return item
+        locator = (By.ID, self.id_type() + "tv_score")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def students_name(self):
         """排行榜里学生名称"""
-        ele = self.driver.find_elements_by_xpath('//android.widget.RelativeLayout/android.widget.TextView'
-                                                 '[contains(@resource-id, "{}tv_name")]'.format(self.id_type()))
-        return ele
+        locator = (By.XPATH, '//android.widget.RelativeLayout/android.widget.TextView'
+                             '[contains(@resource-id, "{}tv_name")]'.format(self.id_type()))
+        return self.wait.wait_find_elements(locator)
+
 
     @teststep
     def students_score(self):
         """排行榜中学生背的单词数"""
-        ele = self.driver.find_elements_by_xpath('//android.widget.RelativeLayout/android.widget.TextView'
-                                                  '[contains(@resource-id,"{}tv_score")]'.format(self.id_type()))
-        return ele
+        locator = (By.XPATH, '//android.widget.RelativeLayout/android.widget.TextView'
+                             '[contains(@resource-id,"{}tv_score")]'.format(self.id_type()))
+        return self.wait.wait_find_elements(locator)
 
     # 炫耀一下
     @teststeps
     def wait_check_share_page(self):
         """以“title: 炫耀一下”为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'炫耀一下')]")
-        try:
-            WebDriverWait(self.driver, 20, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def play_rank_word(self, total_word):

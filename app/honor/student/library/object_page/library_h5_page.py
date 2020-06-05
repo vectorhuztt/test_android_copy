@@ -15,25 +15,25 @@ class H5SharePage(BasePage):
     @teststep
     def wait_check_share_h5_page(self):
         locator = (By.ID, 'app')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.get_wait_check_page_ele(locator, timeout=5)
 
     @teststep
     def wait_h5_share_wechat_group_page(self):
         """底部分享微信页面检查点"""
         locator = (By.XPATH, '//*[contains(@text, "分享到微信群")]')
-        return self.get_wait_check_page_result(locator, timeout=10)
+        return self.get_wait_check_page_ele(locator, timeout=10)
 
     @teststep
     def wait_share_wechat_friend_page(self):
         locator = (By.XPATH, '//*[contains(@text, "微信好友")]')
-        return self.get_wait_check_page_result(locator, timeout=10)
+        return self.get_wait_check_page_ele(locator, timeout=10)
 
 
     @teststep
     def wait_check_share_no_speak_tip_page(self):
         """无口语推荐片段提示页面检查点"""
         locator = (By.XPATH, '//*[@text="提示"]')
-        return self.get_wait_check_page_result(locator)
+        return self.get_wait_check_page_ele(locator)
 
     @teststep
     def share_page_nickname(self):

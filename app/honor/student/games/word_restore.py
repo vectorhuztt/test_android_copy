@@ -17,39 +17,39 @@ class RestoreWordGame(GameCommonEle):
     def wait_restore_word_explain_page(self):
         """还原单词页面检查点"""
         locator = (By.ID, self.id_type() + "tv_prompt")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_restore_answer_word_page(self):
         """还原单词页面检查点"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@resource-id, "tv_word") and @index=1]')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
 
     @teststep
     def word_explain(self):
         """解释"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'tv_prompt')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_prompt')
+        return self.wait.wait_find_element(locator, timeout=5)
 
     @teststep
     def word_alpha(self):
         """每个字母"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_word')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_word')
+        return self.wait.wait_find_elements(locator, timeout=5)
 
     @teststep
     def word(self, index=0):
         """展示的 待还原的单词"""
-        word = self.driver.find_elements_by_xpath('//android.widget.TextView[@resource-id= '
-                                                  '"{}tv_word" and @index={}]'.format(self.id_type(), index))
-        return word
+        locator = (By.XPATH, '//android.widget.TextView[@resource-id="{}tv_word" '
+                             'and @index={}]'.format(self.id_type(), index))
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def voice(self):
         """声音按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'fab_sound')
-        return ele
+        locator = (By.ID, self.id_type() + 'fab_sound')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def button_swipe(self, from_x, from_y, to_x, to_y, steps=1000):

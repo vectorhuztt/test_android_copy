@@ -59,7 +59,7 @@ class HwShare(unittest.TestCase):
                     self.van.vanclass_hw()  # 点击 本班作业 tab
                     if self.detail.wait_check_page(gv.CLASS_NAME):  # 页面检查点
                         print('%s 本班作业:' % gv.CLASS_NAME)
-                        if self.van.empty_tips():
+                        if self.van.wait_check_empty_tips():
                             print('暂无数据')
                         else:
                             all_hw = self.detail.all_tab()  # 全部 tab

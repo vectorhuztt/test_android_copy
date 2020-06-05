@@ -7,132 +7,130 @@ from selenium.webdriver.common.by import By
 from app.honor.student.library.object_page.game_result_page import ResultPage
 from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
+from utils.wait_element import WaitElement
 
 
 class LibraryGamePage(BasePage):
-    def __init__(self):
-        self.result = ResultPage()
+    result = ResultPage()
+    wait = WaitElement()
 
     @teststep
     def wait_check_top_name_page(self, name):
         locator = (By.XPATH, '//android.view.ViewGroup[contains(@resource-id, "common_toolbar")]/'
                              'android.widget.TextView[contains(@text,"{}")]'.format(name))
-        return self.get_wait_check_page_result(locator, timeout=10)
+        return self.wait.wait_check_element(locator, timeout=10)
 
     @teststep
     def wait_check_share_page(self):
         """分享页面"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@text,"图书分享")]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_bank_list_page(self):
         """大题列表页面检查点"""
-        locator = (By.ID, '{}tv_testbank_name'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        locator = (By.ID, self.id_type() + 'tv_testbank_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def wait_check_game_page(self):
         """游戏页面检查点"""
         locator = (By.ID, '{}progress'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_share_area_page(self):
         """分享页面检查点"""
         locator = (By.ID, '{}share_area'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststeps
     def wait_check_game_list_page(self, var):
         """以 小游戏的class_name为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text, %s)]" % var)
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_homework_list_page(self):
         """作业页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@resource-id,"
                              "'{}tv_homework_name')]".format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def homework_list(self):
         """作业列表"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_homework_name')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_homework_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def share_btn(self):
         """分享"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'share')
-        return ele
+        locator = (By.ID, self.id_type() + 'share')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def share_page_menu_share_btn(self):
         """分享页面的分享按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'menu_share')
-        return ele
+        locator = (By.ID, self.id_type() + 'menu_share')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def punch_share_btn(self):
         """立即打卡 -分享页面"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'sign')
-        return ele
+        locator = (By.ID, self.id_type() + 'sign')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def start_game_btn(self):
         """开始阅读 -做题页面"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'sign_bottom')
-        return ele
-
+        locator = (By.ID, self.id_type() + 'sign_bottom')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def bank_name_list(self):
         """大题列表"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_testbank_name')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_testbank_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def bank_type(self):
         """大题类型"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_testbank_type')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_testbank_type')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def bank_name_by_type(self, bank_type):
         """根据大题题型获取题目名称"""
-        ele = self.driver.find_elements_by_xpath('//android.widget.TextView[@text="{}"]/../preceding-sibling::'
-                                                 'android.widget.RelativeLayout/android.widget.TextView[contains'
-                                                 '(@resource-id, "tv_testbank_name")]'.format(bank_type))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]/../preceding-sibling::android.widget.RelativeLayout'
+                             '/android.widget.TextView[contains(@resource-id, "tv_testbank_name")]'.format(bank_type))
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def bank_name(self):
         """大题名称"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_testbank_name')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_testbank_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def bank_progress_by_name(self, bank_name):
         """根据大题名称获取"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="{}"]/../following-sibling::android.widget.RelativeLayout/'
-                                                'android.widget.TextView[contains(@resource-id, "tv_testbank_status")]'.format(bank_name))
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]/../following-sibling::android.widget.RelativeLayout'
+                             '/android.widget.TextView[contains(@resource-id, "tv_testbank_status")]'.format(bank_name))
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def click_bank_by_name(self, bank_name):
         """通过名称定为大题并点击"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="{}"]'.format(bank_name))
-        ele.click()
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]'.format(bank_name))
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def game_name(self):
         """游戏名称"""
-        ele = self.driver.find_element_by_xpath('//*[@resource-id="{}common_toolbar"]/'
-                                                'android.widget.TextView'.format(self.id_type()))
-        return ele.text
-
+        locator = (By.XPATH, '//*[@resource-id="{}common_toolbar"]/android.widget.TextView'.format(self.id_type()))
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def check_process_change(self, bank_name, bank_progress):

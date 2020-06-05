@@ -3,6 +3,7 @@
 #  @Time   : 2019/12/27 9:12
 # -----------------------------------------
 import random
+import time
 
 from selenium.webdriver.common.by import By
 
@@ -13,136 +14,153 @@ from app.honor.student.punch_activity.object_page.punch_sql_handle import PunchS
 from conf.base_page import BasePage
 from conf.decorator import teststep
 from utils.toast_find import Toast
+from utils.wait_element import WaitElement
 
 
 class PunchActivityPage(BasePage):
-    def __init__(self):
-        self.library = LibraryGamePage()
+    library = LibraryGamePage()
+    wait = WaitElement()
 
     @teststep
     def wait_check_alert_punch_tip_page(self):
         locator = (By.XPATH, '//android.widget.ImageView[contains(@content-desc, "21天打卡活动")]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_home_punch_notice_page(self):
         """主页的打卡提示页面检查点"""
         locator = (By.XPATH, '//android.support.v7.widget.RecyclerView/android.view.ViewGroup[2]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def wait_check_activity_book_item_page(self):
         """打卡页面检查点"""
         locator = (By.ID, self.id_type() + 'activitie_book_item')
-        return self.get_wait_check_page_result(locator, timeout=10)
+        return self.wait.wait_check_element(locator, timeout=10)
 
     @teststep
     def wait_check_class_list_page(self):
         """班级列表页面检查点"""
         locator = (By.CLASS_NAME, 'android.widget.ListView')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_punch_lock_icon_page(self, book_id):
         """打卡锁图标检查点"""
         locator = (By.XPATH, '//android.widget.TextView[@content-desc="{}"]/following-sibling::'
                              'android.widget.ImageView[@index="3"]'.format(book_id))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_select_checkpoint_page(self):
         """选择关卡页面检查点"""
         locator = (By.ID, self.id_type() + 'progress_topic')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_share_tip_page(self):
         """炫耀一下按钮提示页面检查点"""
         locator = (By.XPATH, '//*[contains(@text, "“炫耀一下”才算完成任务呦~")]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_checkpoint_continue_tip_by_index_page(self, index):
         """关卡继续提示页面检查点"""
         locator = (By.XPATH, '//android.support.v7.widget.RecyclerView/android.view.ViewGroup[@index="{}"]/'
                              'android.widget.ImageView[contains(@resource-id, "tit")]'.format(index))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_page_has_continue_tip_page(self):
         """检查关卡页面是否存在继续按钮"""
         locator = (By.XPATH, '//android.support.v7.widget.RecyclerView/android.view.ViewGroup/'
                              'android.widget.ImageView[contains(@resource-id, "tit")]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
+    @teststep
+    def close_alert_tip(self):
+        locator = (By.XPATH, '//android.widget.ImageView[@index=1]')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def click_alert_tip(self):
         """点击弹出的打卡页面"""
-        self.driver.find_element_by_xpath('//*[@resource-id="android:id/content"]/'
-                                          'android.view.ViewGroup/android.widget.ImageView').click()
+        locator = (By.XPATH, '//*[@resource-id="android:id/content"]/'
+                                          'android.view.ViewGroup/android.widget.ImageView')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def home_page_punch_tab(self):
         """主页进入打卡页面的tab"""
-        ele = self.driver.find_element_by_xpath('//android.support.v7.widget.RecyclerView/android.view.ViewGroup[2]')
-        return ele
+        locator = (By.XPATH, '//android.support.v7.widget.RecyclerView/android.view.ViewGroup[2]')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def change_class_btn(self):
         """切换班级按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'spinner_bar')
-        return ele
+        locator = (By.ID, self.id_type() + 'spinner_bar')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def class_list(self):
         """班级列表"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'spinner_bar_item')
-        return ele
+        locator = (By.ID, self.id_type() + 'spinner_bar_item')
+        return self.wait.wait_find_elements(locator)
+
 
     @teststep
     def activity_title(self):
         """活动名称"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'activity_title')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'activity_title')
+        return self.wait.wait_find_element(locator)
+
 
     @teststep
     def punch_books(self):
         """打卡列表"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'entry_tv')
-        return ele
+        locator = (By.ID, self.id_type() + 'entry_tv')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def punch_book_status(self, book_id):
         """打卡书籍状态"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@content-desc="{}"]/preceding-sibling::'
-                                                'android.widget.ImageView[contains(@resource-id, "activitie_book_item")]'.format(book_id))
+        locator = (By.XPATH, '//android.widget.TextView[@content-desc="{}"]/preceding-sibling::'
+                             'android.widget.ImageView[contains(@resource-id, "activitie_book_item")]'.format(book_id))
+        ele = self.wait.wait_find_element(locator)
         return self.attr.get_cont_desc(ele)
 
     @teststep
     def punch_book_id(self, index):
         """获取图书id"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'entry_tv')
+        locator = (By.ID, self.id_type() + 'entry_tv')
+        ele = self.wait.wait_find_elements(locator)
         return self.attr.get_cont_desc(ele[index])
 
     @teststep
     def punch_page_back_icon(self):
         """打卡页面退出按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'back_but')
-        return ele
+        locator = (By.ID, self.id_type() + 'back_but')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def checkpoint_list(self):
         """关卡列表"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'selector_circle_tv')
-        return ele
+        locator = (By.ID, self.id_type() + 'selector_circle_tv')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def share_btn(self):
         """炫耀一下按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'progress_topic')
-        return ele
-    
+        locator = (By.ID, self.id_type() + 'progress_topic')
+        return self.wait.wait_find_element(locator)
+
+    @teststep
+    def close_home_activity_tip(self):
+        """关闭首页的弹窗信息"""
+        if self.wait_check_alert_punch_tip_page():
+            self.close_alert_tip().click()
+            time.sleep(1)
+
     @teststep
     def checkpoint_core_process(self, stu_id, activity_class_info):
         if not self.wait_check_activity_book_item_page():

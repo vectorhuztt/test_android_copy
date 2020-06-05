@@ -17,50 +17,51 @@ class ListenSelectImageGame(GameCommonEle):
     def wait_check_listen_image_page(self):
         """听音选图页面检查点 以题目索引id作为依据"""
         locator = (By.ID, self.id_type() + "img")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_ques_text_by_index(self, index):
         """听音题目选图页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text, '{}.')]".format(index))
-        return self.get_wait_check_page_result(locator, timeout=3)
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def get_ques_text_by_index(self, index):
         """根据索引值获取问题内容"""
-        ele = self.driver.find_element_by_xpath("//android.widget.TextView[contains(@text, '{}.')]".format(index))
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text, '{}.')]".format(index))
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def get_images_by_index(self, index):
         """根据index 获取结果页图片信息"""
-        ele = self.driver.find_elements_by_xpath("//android.widget.ImageView[contains(@content-desc, '## {} ##')]".format(index))
-        return ele
+        locator = (By.XPATH, "//android.widget.ImageView[contains(@content-desc, '## {} ##')]".format(index))
+        return self.wait.wait_find_elements(locator)
+
 
     @teststep
     def ques_index(self):
         """问题索引"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'num')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'num')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def listen_question(self):
         """问题"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'sentence')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'sentence')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def image_options(self):
         """图片"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'img')
-        return ele
+        locator = (By.ID, self.id_type() + 'img')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def voice_button(self):
         """声音按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'exo_play')
-        return ele
-
+        locator = (By.ID, self.id_type() + 'exo_play')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def image_choice_play_process(self, do_right=False, right_answer=None):
@@ -126,7 +127,6 @@ class ListenSelectImageGame(GameCommonEle):
         """听音选图结果页面处理"""
         right_answer = {}
         right_count = 0
-        # self.voice_button().click()
         for x in range(len(mine_answer)):
             if x == len(mine_answer) - 1:
                 index_num = x+1

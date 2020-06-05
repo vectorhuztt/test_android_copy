@@ -17,61 +17,60 @@ class SentenceLinkGame(GameCommonEle):
     def wait_check_link_sentence_page(self):
         """连词成句页面检查点"""
         locator = (By.ID, '{}tv_prompt'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_right_answer_page(self):
         """检查是否出现正确答案"""
         locator = (By.ID, '{}tv_sentence'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def word_alpha(self):
         """每个字母"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_word')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_word')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def sentence_explain(self):
         """解释"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'tv_prompt')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'tv_prompt')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def right_answer(self):
         """正确答案"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'tv_sentence')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'tv_sentence')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def group_answer_sentence(self, index):
         """句子正确答案"""
-        ele = self.driver.find_element_by_xpath('//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc="{}"]//'
-                                                'android.widget.TextView[contains(@resource-id, "tv_answer")]'.format(index))
-        return ele.text
+        locator = (By.XPATH, '//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc="{}"]'
+                             '//android.widget.TextView[contains(@resource-id, "tv_answer")]'.format(index))
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def group_hint_explain(self, index):
         """句子解释"""
-        ele = self.driver.find_element_by_xpath("//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']//"
-                                                "android.widget.TextView[contains(@resource-id, 'tv_hint')]".format(index))
-        return ele.text
+        locator = (By.XPATH, '//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc="{}"]'
+                             '//android.widget.TextView[contains(@resource-id, "tv_hint")]'.format(index))
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def group_sentence_right_wrong_icon(self, index):
         """正确错误图标"""
-        ele = self.driver.find_element_by_xpath("//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']//"
-                                                "android.widget.ImageView[contains(@resource-id, 'iv_mine')]".format(index))
-        return ele
-
+        locator = (By.XPATH, "//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']"
+                             "//android.widget.ImageView[contains(@resource-id, 'iv_mine')]".format(index))
+        return self.wait.wait_find_element(locator)
 
     # 句型转换、听音连句的句型转换
     @teststep
     def group_mine_answer(self, index):
         """我的答案"""
-        ele = self.driver.find_element_by_xpath("//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']//"
-                                                "android.widget.TextView[contains(@resource-id, 'tv_mine')]".format(index))
-        return ele.text
+        locator = (By.XPATH, "//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']"
+                             "//android.widget.TextView[contains(@resource-id, 'tv_mine')]".format(index))
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def do_right_operate(self, right_answer):

@@ -15,32 +15,31 @@ class GuessWordGame(GameCommonEle):
     @teststep
     def wait_check_guess_word_page(self):
         """猜词游戏页面检查点"""
-        locator = (By.ID, 'level')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        locator = (By.ID, self.id_type() + 'level')
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def keyboard(self):
         """键盘"""
-        ele = self.driver.find_element_by_id(self.id_type() + "hm_keyboard")
-        return ele
+        locator = (By.ID, self.id_type() + 'hm_keyboard')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def keyboard_key(self):
-        ele = self.driver.find_elements_by_xpath('//*[@resource-id="{}hm_keyboard"]/'
-                                                 'android.widget.TextView'.format(self.id_type()))
-        return ele
+        locator = (By.XPATH, '//*[@resource-id="{}hm_keyboard"]/android.widget.TextView'.format(self.id_type()))
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def word_explain(self):
         """翻译"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'chinese')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'chinese')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def guess_word(self):
         """单词"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'english')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'english')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def word_guess_play_process(self, do_right=False, right_answer=None):

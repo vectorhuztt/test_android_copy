@@ -1,10 +1,6 @@
-import random
-import re
-import string
 from app.honor.student.games.word_spell import SpellWordGame
 from app.honor.student.test_paper.object_page.answer_page import AnswerPage
 from conf.decorator import teststep
-from utils.games_keyboard import Keyboard
 
 
 class WordSpell(SpellWordGame):

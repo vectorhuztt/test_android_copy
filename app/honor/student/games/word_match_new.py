@@ -17,19 +17,19 @@ class LinkWordGame(SpellWordGame):
     def wait_check_word_match_page(self):
         """连连看页面检查点"""
         locator = (By.ID, '{}mg_1'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_result_image_page(self):
         """结果页图片页面检查点"""
         locator = (By.ID, '{}img'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def get_word_cards(self):
         """获取所有卡片"""
-        cards = self.driver.find_elements_by_xpath('//*[contains(@resource-id, "mg_")]/android.widget.TextView')
-        return cards
+        locator = (By.XPATH, '//*[contains(@resource-id, "mg_")]/android.widget.TextView')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def is_hans(self, word):
@@ -43,7 +43,8 @@ class LinkWordGame(SpellWordGame):
     @teststep
     def get_img_status_by_text(self, text):
         """根据文本内容获取卡片状态"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="{}"]/following-sibling::android.view.View'.format(text))
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]/following-sibling::android.view.View'.format(text))
+        ele = self.wait.wait_find_element(locator)
         return ele.get_attribute('selected')
 
     @teststep

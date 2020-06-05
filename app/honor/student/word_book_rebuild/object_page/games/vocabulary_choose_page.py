@@ -195,7 +195,7 @@ class VocabularyChoose(VocabChoiceGame):
                 self.base_assert.except_error('点击提示后未发现句子解释文本')
             else:
                 sentence_explain = self.apply_sentence_explain()
-                self.base_assert.except_error('句子解释：' + sentence_explain)
+                print('单词解释：', sentence_explain)
 
             for y in self.vocab_options():
                 if y.text == right_answer:

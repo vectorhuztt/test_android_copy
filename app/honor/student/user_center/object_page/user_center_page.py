@@ -11,111 +11,100 @@ from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.word_book.object_page.wordbook_sql import WordBookSql
 from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
+from utils.wait_element import WaitElement
 
 
 class UserCenterPage(BasePage):
     """个人中心 页面"""
 
+    wait = WaitElement()
+
     @teststep
     def wait_check_user_center_page(self):
         """以“设置”业务的xpath @index为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'设置')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_nickname_page(self):
         """以“设置”业务的xpath @index为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'昵称')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def click_avatar_profile(self):
         """以“头像”的id为依据"""
-        self.driver\
-            .find_element_by_id(self.id_type() + 'avatar_profile')\
-            .click()
+        locator = (By.ID, self.id_type() + 'avatar_profile')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_cards(self):
         """以“卡片”的id为依据"""
-        self.driver\
-            .find_element_by_id(self.id_type() + 'cards')\
-            .click()
-
-    @teststep
-    def click_statistics(self):
-        """以“统计”的id为依据"""
-        self.driver \
-            .find_elements_by_id(self.id_type() + "statistics") \
-            .click()
-
-    @teststep
-    def click_message(self):
-        """以“消息”的id为依据"""
-        self.driver \
-            .find_elements_by_id(self.id_type() + "message") \
-            .click()
+        locator = (By.ID, self.id_type() + 'cards')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_setting(self):
         """以“设置”的id为依据"""
-        self.driver \
-            .find_element_by_id(self.id_type() + "setting") \
-            .click()
+        locator = (By.ID, self.id_type() + 'setting')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_buy(self):
         """购买"""
-        self.driver.find_element_by_id(self.id_type() + 'study_card').click()
-
+        locator = (By.ID, self.id_type() + 'study_card')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def wait_check_buy_page(self):
         """购买页面检查点"""
         locator = (By.ID, self.id_type() + "goToCustomerService")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_logout_page(self):
         """退出登录页面检查点"""
         locator = (By.ID, self.id_type() + "logout")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def nickname(self):
         """昵称"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'name')
+        locator = (By.ID, self.id_type() + 'name')
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def school_name(self):
         """学校名称"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'school_name')
+        locator = (By.ID, self.id_type() + 'school_name')
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def purchase(self):
         """购买"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'study_card')
-        return ele
+        locator = (By.ID, self.id_type() + 'study_card')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def phone(self):
         """学生的手机号"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'phone')
+        locator = (By.ID, self.id_type() + 'phone')
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def setting_up(self):
         """设置"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'setting')
-        return ele
+        locator = (By.ID, self.id_type() + 'setting')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def clear_cache(self):
         """清除缓存"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'clear_cache')
-        return ele
+        locator = (By.ID, self.id_type() + 'clear_cache')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def get_user_info(self):
@@ -161,29 +150,32 @@ class UserCenterPage(BasePage):
 
 class MessageCenter(BasePage):
     """消息中心页面"""
+    wait = WaitElement()
 
     @teststep
     def wait_check_page(self):
         """以“title:消息中心”的xpath @text为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'消息中心')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def iv_read_count(self):
         """以“未读消息数”的id为依据"""
-        count = self.driver.find_elements_by_id(self.id_type() + "iv_read")
-        return len(count)
+        locator = (By.ID, self.id_type() + 'iv_read')
+        ele = self.wait.wait_find_elements(locator)
+        return len(ele)
 
     @teststep
     def message_count(self):
         """以“消息总数”的class_name为依据"""
-        message = self.driver.find_elements_by_class_name("android.widget.RelativeLayout")
-        return message
+        locator = (By.CLASS_NAME, "android.widget.RelativeLayout")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def click_message(self):
         """以“消息”的class_name为依据"""
-        self.driver.find_elements_by_class_name("android.widget.RelativeLayout").click()
+        locator = (By.CLASS_NAME, "android.widget.RelativeLayout")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def del_message(self, size, rollsize=1):
@@ -198,65 +190,66 @@ class MessageCenter(BasePage):
     @teststep
     def click_negative_button(self):
         """以“取消按钮”的id为依据"""
-        self.driver\
-            .find_element_by_id(self.id_type() + 'md_buttonDefaultNegative').click()
+        locator = (By.ID, self.id_type() + "md_buttonDefaultNegative")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_positive_button(self):
         """以“确认按钮”的id为依据"""
-        self.driver\
-            .find_element_by_id(self.id_type() + 'md_buttonDefaultPositive').click()
+        locator = (By.ID, self.id_type() + "md_buttonDefaultPositive")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def back_up_button(self):
         """以“返回按钮”的class_name为依据"""
-        self.driver\
-            .find_element_by_class_name("android.widget.ImageButton").click()
+        locator = (By.CLASS_NAME, "android.widget.ImageButton")
+        self.wait.wait_find_element(locator).click()
 
 
 class Setting(BasePage):
     """设置页面"""
+    wait = WaitElement()
 
     @teststep
     def wait_check_page(self):
         """以“title:设置”的xpath @index为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'设置')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def help_center(self):
         """以“帮助中心”的id为依据"""
-        self.driver\
-            .find_element_by_id(self.id_type() + "help").click()
+        locator = (By.ID, self.id_type() + "help")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def question_feedback(self):
         """以“问题反馈”的id为依据"""
-        self.driver\
-            .find_element_by_id(self.id_type() + "feed").click()
+        locator = (By.ID, self.id_type() + "feed")
+        self.wait.wait_find_element(locator).click()
 
     def privacy_clause(self):
         """以“隐私条款”的id为依据"""
-        self.driver\
-            .find_element_by_id(self.id_type() + "right").click()
+        locator = (By.ID, self.id_type() + "right")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def register_protocol(self):
         """以“注册协议”的id为依据"""
-        self.driver\
-            .find_element_by_id(self.id_type() + "protocol").click()
+        locator = (By.ID, self.id_type() + "protocol")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def version_check(self):
         """以“版本检测”的id为依据"""
-        self.driver.find_element_by_id(self.id_type() + "version_check") \
-            .click()
+        locator = (By.ID, self.id_type() + "version_check")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def logout_button(self):
         """以“退出登录按钮”的id为依据"""
-        self.driver.find_element_by_id(self.id_type() + "logout") \
-            .click()
+        locator = (By.ID, self.id_type() + "logout")
+        self.wait.wait_find_element(locator).click()
 
     @teststeps
     def back_up(self):
@@ -280,44 +273,24 @@ class Setting(BasePage):
                 HomePage().tips_operate_commit()  # 退出登录提示框
 
 
-class QuestionFeedback(BasePage):
-    """二级页面：问题反馈页面"""
-
-    @teststep
-    def wait_check_page(self):
-        """以“title:问题反馈”的xpath @text为依据"""
-        locator = (By.XPATH, "//android.widget.TextView[contains(@text, '问题反馈')]")
-        return self.get_wait_check_page_result(locator)
-
-    @teststep
-    def edit_text(self):
-        """以“编辑框”的id为依据"""
-        ele = self.driver\
-            .find_element_by_id(self.id_type() + "et_feedback")
-        return ele
-
-    @teststep
-    def submit_button(self):
-        """以“提交按钮”的id为依据"""
-        self.driver.find_element_by_id(self.id_type() + "bt_submit") \
-            .click()
-
-
 class Privacy(BasePage):
     """版权申诉"""
+    wait = WaitElement()
 
     @teststep
     def wait_check_page(self):
         """以“title:版权申诉”的xpath @text为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'版权申诉')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
 
 class ProtocolPage(BasePage):
     """注册协议"""
+    wait = WaitElement()
+
     @teststep
     def wait_check_page(self):
         """以“title:注册协议”的xpath @text为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'注册协议')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 

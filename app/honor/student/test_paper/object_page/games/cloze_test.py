@@ -15,7 +15,7 @@ class ClozeTest(ClozeGame):
         article = self.rich_text()
         print(article.text)
         for i in range(num):
-            question = self.question()[0].text
+            question = self.question().text
             print('题目：', question)
             select_answer = self.cloze_game_play_process()
             print('选择答案：', select_answer)

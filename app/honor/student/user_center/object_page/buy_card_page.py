@@ -14,6 +14,7 @@ from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.user_center.object_page.user_center_page import UserCenterPage
 from conf.base_page import BasePage
 from conf.decorator import teststep
+from utils.wait_element import WaitElement
 
 
 class PurchasePage(BasePage):
@@ -21,169 +22,144 @@ class PurchasePage(BasePage):
     def __init__(self):
         self.home = HomePage()
         self.user_center = UserCenterPage()
+        self.wait = WaitElement()
 
     @teststep
     def wait_check_buy_page(self):
-            """以“购买”的xpath @text为依据"""
-            locator = (By.XPATH, "//android.widget.TextView[contains(@text,'在线客服')]")
-            try:
-                WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-                return True
-            except:
-                return False
+        """以“购买”的xpath @text为依据"""
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'在线客服')]")
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_help_center_page(self):
         """以“帮助中心”的xpath @text为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'帮助中心')]")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_card_page(self):
         """以“优惠购买”的id 为依据"""
         locator = (By.ID, self.id_type() + "discount_pay")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_agreement_page(self):
         """以“购买协议”的xpath 为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'购买协议')]")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_pay_confirm_page(self):
         """以“支付确认”的xpath 为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'支付确认')]")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_parent_pay_page(self):
         """以“支付完成”的ID 为依据"""
         locator = (By.ID, self.id_type() + "pay_complete")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_magic_page(self):
         """以“支付完成”的ID 为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'在线助教家长端')]")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
 
     @teststep
     def online_server(self):
         """在线客服"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'goToCustomerService')
-        return ele
+        locator = (By.ID, self.id_type() + 'goToCustomerService')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def magics(self):
-        ele = self.driver.find_elements_by_id(self.id_type() + 'function_des')
-        return ele
+        locator = (By.ID, self.id_type() + 'function_des')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def upgrade_button(self):
         """马上购买"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'goToUpgrade')
-        return ele
+        locator = (By.ID, self.id_type() + 'goToUpgrade')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def discount_buy(self):
         """优惠购买"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'discount_pay')
-        return ele
+        locator = (By.ID, self.id_type() + 'discount_pay')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def card_type(self):
         """优惠卡类型"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'one')
-        return ele
+        locator = (By.ID, self.id_type() + 'one')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def check_radio(self, card_name):
         """选项按钮"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[contains(@text, "{}")]/../'
-                                                'preceding-sibling::android.widget.RadioButton'.format(card_name))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[contains(@text, "{}")]/../preceding-sibling::'
+                             'android.widget.RadioButton'.format(card_name))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def card_price(self, card_name):
         """卡片的价格  根据卡的类型获取"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[contains(@text, "{}")]/../'
-                                                'following-sibling::android.widget.LinearLayout/'
-                                                'android.widget.TextView'.format(card_name))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[contains(@text, "{}")]/../following-sibling::'
+                             'android.widget.LinearLayout/android.widget.TextView'.format(card_name))
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def selected_card(self):
         """已选卡型"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'current_vip_card_hint')
-        return ele
+        locator = (By.ID, self.id_type() + 'current_vip_card_hint')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def direct_buy_button(self):
-        ele = self.driver.find_element_by_id(self.id_type() + 'pay')
-        return ele
+        locator = (By.ID, self.id_type() + 'pay')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def confirm_pay_button(self):
-        ele = self.driver.find_element_by_id(self.id_type() + 'pay')
-        return ele
+        locator = (By.ID, self.id_type() + 'pay')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def discount_buy_button(self):
         """优惠购买按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'discount_pay')
-        return ele
+        locator = (By.ID, self.id_type() + 'discount_pay')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def agreement(self):
         """购买协议"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'pay_agreement')
-        return ele
+        locator = (By.ID, self.id_type() + 'pay_agreement')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def ali_pay_tab(self):
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[contains(@text,"支付宝代付")]')
-        return ele
+        """支付宝支付"""
+        locator = (By.XPATH, '//android.widget.TextView[contains(@text,"支付宝代付")]')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def wechat_pay_tab(self):
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[contains(@text,"微信代付")]')
-        return ele
+        """微信支付"""
+        locator = (By.XPATH, '//android.widget.TextView[contains(@text,"微信代付")]')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def parent_check_button(self):
-        ele = self.driver.find_element_by_id(self.id_type() + 'parent_pay_check')
-        return ele
+        locator = (By.ID, self.id_type() + 'pay_agreement')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def get_all_text_view(self):
         """获取页面所有不为空的文本值"""
-        ele = self.driver.find_elements_by_class_name('android.widget.TextView')
+        locator = (By.CLASS_NAME, 'android.widget.TextView')
+        ele = self.wait.wait_find_elements(locator)
         all_text = [ele[i].text for i in range(len(ele)) if ele[i].text != '' and ele[i].text is not None]
         return all_text
 

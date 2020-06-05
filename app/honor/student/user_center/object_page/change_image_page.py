@@ -7,21 +7,19 @@ from selenium.webdriver.common.by import By
 from conf.decorator import teststep, teststeps
 from conf.base_page import BasePage
 from utils.click_bounds import ClickBounds
+from utils.wait_element import WaitElement
 
 
 class MeizuPage(BasePage):
     """魅族5.1"""
+    wait = WaitElement()
 
     # 拍照 魅族5.1
     @teststeps
-    def wait_check_camera_page(self, var=10):
+    def wait_check_camera_page(self):
         """以 “拍照键”的resource-id为依据"""
         locator = (By.ID, "com.meizu.media.camera:id/shutter_btn")
-        try:
-            WebDriverWait(self.driver, var, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     # 第一页面
     @teststep
@@ -29,159 +27,125 @@ class MeizuPage(BasePage):
         """以相机拍照按钮"""
         time.sleep(2)
         print('点击 拍照按钮')
-        self.driver \
-            .find_element_by_id("com.meizu.media.camera:id/shutter_btn") \
-            .click()
+        locator = (By.ID, "com.meizu.media.camera:id/shutter_btn")
+        return self.wait.wait_find_element(locator).click()
 
     # 第二页面
     @teststeps
-    def wait_check_retake_page(self, var=10):
+    def wait_check_retake_page(self):
         """以 “”的resource-id为依据"""
         locator = (By.ID, "com.meizu.media.camera:id/btn_retake")
-        try:
-            WebDriverWait(self.driver, var, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def click_done_button(self):
         """相机'完成'按钮"""
         print('点击 保存按钮')
-        self.driver \
-            .find_element_by_id("com.meizu.media.camera:id/btn_done") \
-            .click()
+        locator = (By.ID, "com.meizu.media.camera:id/btn_done")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_retake_button(self):
         """相机'retake'按钮"""
         print('点击 重拍按钮')
-        self.driver \
-            .find_element_by_id("com.meizu.media.camera:id/btn_retake") \
-            .click()
+        locator = (By.ID, "com.meizu.media.camera:id/btn_retake")
+        self.wait.wait_find_element(locator).click()
 
     # 第三页面
     @teststep
     def wait_check_save_page(self):
         """取消 按钮 的为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text, '取消')]")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def click_save_button(self):
         """相机保存按钮"""
         print('点击 完成按钮')
-        self.driver \
-            .find_element_by_xpath("//android.widget.TextView[contains(@text,'完成')]") \
-            .click()
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'完成')]")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_cancel_button(self):
         """相机取消按钮"""
         print('点击 取消按钮')
-        self.driver \
-            .find_element_by_xpath("//android.widget.TextView[contains(@text,'取消')]") \
-            .click()
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'取消')]")
+        self.wait.wait_find_element(locator).click()
 
     # 相册 魅族5.1
     @teststep
     def wait_check_album_page(self):
         """最新tab 的单个内容 的resource-id为依据"""
         locator = (By.ID, "com.meizu.media.gallery:id/thumbnail")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_elements(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststeps
     def wait_check_album_list_page(self):
         """相册列表页面检查点"""
         locator = (By.ID, "com.meizu.media.gallery:id/album_cover")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_elements(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     # 第一页面
     @teststep
     def click_album(self):
         """进入相册tab"""
         print('进入相册列表页')
-        self.driver \
-            .find_element_by_xpath("//android.widget.TextView[contains(@text,'相册')]") \
-            .click()
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'相册')]")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def wait_check_all_picture_page(self):
         """所有图片 的为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text, '所有图片')]")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def open_album(self):
         """打开 第一个相册"""
         print('选择相册')
-        self.driver \
-            .find_elements_by_id("com.meizu.media.gallery:id/album_name")[0] \
-            .click()
+        locator = (By.XPATH, "com.meizu.media.gallery:id/album_name")
+        self.wait.wait_find_elements(locator)[0].click()
 
     # 第二页面  检查点用 wait_check_album_list_page()
     @teststep
     def choose_image(self):
         """选择相册图片"""
         print('选择照片')
-        self.driver.find_elements_by_id('com.meizu.media.gallery:id/thumbnail')[0].click()
+        locator = (By.ID, "com.meizu.media.gallery:id/thumbnail")
+        self.wait.wait_find_elements(locator)[0].click()
+
 
     # 第三页面
     @teststep
     def wait_check_photo_page(self):
         """ 确定 按钮 的resource-id为依据"""
         locator = (By.ID, "com.meizu.media.gallery:id/fragment_container")
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def commit_button(self):
         """相册确定按钮"""
         print('点击 确定按钮')
-        self.driver \
-            .find_element_by_xpath("//android.widget.TextView[contains(@text,'确定')]") \
-            .click()
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'确定')]")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def back_up_button(self):
         """相册返回按钮"""
-        self.driver \
-            .find_element_by_id("android:id/home") \
-            .click()
+        locator = (By.ID, "android:id/home")
+        self.wait.wait_find_element(locator).click()
 
 
 class SimulatorPage(BasePage):
     """夜神模拟器"""
+    wait = WaitElement()
 
     # 模拟器 5.1
     @teststep
     def wait_check_album_page(self, var=10):
         """以相册title:“选择照片”的text为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'选择照片')]")
-        try:
-            WebDriverWait(self.driver, var, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def choose_album_mul(self):
@@ -192,132 +156,103 @@ class SimulatorPage(BasePage):
 
 class HonorPage(BasePage):
     """华为7.0"""
+    wait = WaitElement()
 
     # 拍照 华为7.0
     @teststeps
-    def wait_check_camera_page(self, var=10):
+    def wait_check_camera_page(self):
         """以 “拍照键”的resource-id为依据"""
         locator = (By.ID, "com.huawei.camera:id/shutter_button")
-        try:
-            WebDriverWait(self.driver, var, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     # 第一页面
     @teststep
     def click_camera_button(self):
         """以相机拍照按钮"""
         print('点击 拍照按钮')
-        self.driver \
-            .find_element_by_id("com.huawei.camera:id/shutter_button") \
-            .click()
+        locator = (By.ID, "com.huawei.camera:id/shutter_button")
+        self.wait.wait_find_element(locator).click()
 
     # 第二页面
     @teststeps
     def wait_check_retake_page(self, var=10):
         """以 “”的resource-id为依据"""
         locator = (By.ID, "com.huawei.camera:id/btn_cancel")
-        try:
-            WebDriverWait(self.driver, var, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def click_done_button(self):
         """相机'完成'按钮"""
         print('点击 完成按钮')
-        self.driver \
-            .find_element_by_id("com.huawei.camera:id/btn_done") \
-            .click()
+        locator = (By.ID, "com.huawei.camera:id/btn_done")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_retake_button(self):
         """相机'retake'按钮"""
         print('点击 重拍按钮')
-        self.driver \
-            .find_element_by_id("com.huawei.camera:id/btn_cancel") \
-            .click()
+        locator = (By.ID, "com.huawei.camera:id/btn_cancel")
+        self.wait.wait_find_element(locator).click()
 
     # 相册 华为7.0
     @teststep
     def wait_check_album_page(self, var=10):
         """相册 的resource-id为依据"""
         locator = (By.ID, "com.android.gallery3d:id/album_name")
-        try:
-            WebDriverWait(self.driver, var, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def open_album(self):
         """打开 第二个相册"""
         print('进入相册')
-        self.driver \
-            .find_elements_by_id("com.android.gallery3d:id/album_name")[1] \
-            .click()
+        locator = (By.ID, "com.android.gallery3d:id/album_name")
+        self.wait.wait_find_elements(locator)[1].click()
 
     @teststep
-    def wait_check_picture_page(self, var=10):
+    def wait_check_picture_page(self):
         """选择图片 的为依据"""
         locator = (By.ID, "com.android.gallery3d:id/head_actionmode_title")
-        try:
-            WebDriverWait(self.driver, var, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
 
 class PixelPage(BasePage):
     """Pixel 8.1"""
+    wait = WaitElement()
     # 拍照
     @teststep
-    def wait_check_camera_page(self, var=10):
+    def wait_check_camera_page(self):
         """选择图片 的为依据"""
         locator = (By.ID, "com.google.android.GoogleCamera:id/camera_switch_button")
-        try:
-            WebDriverWait(self.driver, var, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     # 第一页面
     @teststep
     def click_retake_button(self):
         """相机'切换前置后置摄像头'按钮"""
         print('切换前置后置摄像头')
-        self.driver \
-            .find_element_by_id("com.google.android.GoogleCamera:id/camera_switch_button") \
-            .click()
+        locator = (By.ID, "com.google.android.GoogleCamera:id/camera_switch_button")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_camera_button(self):
         """以相机拍照按钮"""
         print('点击 拍照按钮')
-        self.driver \
-            .find_element_by_id("com.google.android.GoogleCamera:id/center_placeholder") \
-            .click()
+        locator = (By.ID, "com.google.android.GoogleCamera:id/center_placeholder")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def cancel_button(self):
         """以相机  左上角 取消按钮"""
         print('点击 取消按钮')
-        self.driver \
-            .find_elements_by_class_name("android.view.View")[1] \
-            .click()
+        locator = (By.CLASS_NAME, "android.view.View")
+        self.wait.wait_find_elements(locator)[1].click()
 
     # 第二页面
     @teststeps
     def wait_check_retake_page(self, var=10):
         """以 “”的resource-id为依据"""
         locator = (By.ID, "com.google.android.GoogleCamera:id/retake_button")
-        try:
-            WebDriverWait(self.driver, var, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def click_done_button(self):

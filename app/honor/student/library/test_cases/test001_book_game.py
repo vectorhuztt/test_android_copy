@@ -47,14 +47,14 @@ class BookGame(unittest.TestCase):
         super(BookGame, self).run(result)
 
     @data(*[
-            '单词',
-            # '句子',
+            # '单词',
+            '句子',
             # '文章',
            ])
     @teststeps
     def test_book_operate(self, book_name):
         """测试书籍游戏"""
-        if self.home.wait_check_home_page():
+        if self.home.wait_check_home_page(True):
             user_info = UserCenterPage().get_user_info()
             school_name = user_info[1]
             nickname = user_info[3]
@@ -63,7 +63,7 @@ class BookGame(unittest.TestCase):
             if self.home.wait_check_home_page():
                 self.home.screen_swipe_up(0.5, 0.9, 0.2, 1000)
                 self.home.check_more()[0].click()
-                label_name = '其他教材'
+                label_name = '测试专用'
 
                 # 进入其他教材标签，选择全题型书籍
                 while True:
@@ -89,7 +89,7 @@ class BookGame(unittest.TestCase):
                     self.library.start_study_button().click()
                 self.game_operate(bank_count, nickname)
                 # 从书籍列表页面返回主页面操作
-                self.library.from_bank_back_to_home_operate(school_name)
+                self.library.from_bank_back_to_home_operate(school_name, label_name)
 
 
     @teststeps

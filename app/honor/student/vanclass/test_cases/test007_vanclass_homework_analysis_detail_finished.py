@@ -60,7 +60,7 @@ class HwAnalysisFinish(unittest.TestCase):
                     self.van.vanclass_hw()  # 点击 本班作业 tab
                     if self.detail.wait_check_page(gv.CLASS_NAME):  # 页面检查点
                         print('%s 本班作业:' % gv.CLASS_NAME)
-                        if self.van.empty_tips():
+                        if self.van.wait_check_empty_tips():
                             print('暂无数据')
                         else:
                             incomplete = self.detail.finished_tab()  # 未完成 tab
@@ -69,7 +69,7 @@ class HwAnalysisFinish(unittest.TestCase):
                                 self.base_assert.except_error('Error- 未进入 已完成 tab页')
                             else:
                                 print('--------------已完成tab-------------------')
-                                if self.van.empty_tips():
+                                if self.van.wait_check_empty_tips():
                                     print('暂无数据')
                                 else:
                                     self.hw_operate()  # 具体操作

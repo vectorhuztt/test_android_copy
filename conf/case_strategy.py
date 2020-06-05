@@ -13,7 +13,7 @@ class CaseStrategy:
             .defaultTestLoader.discover(start_dir=gv.PATH(gv.CASE_INFO[index][0]), pattern=gv.CASE_INFO[index][1], top_level_dir=top_dir)
         for suite in suites:
             for case in suite:
-                if list(case):
+                if case:
                     cases.addTest(case)
 
     def collect_cases(self, index, suite=False):

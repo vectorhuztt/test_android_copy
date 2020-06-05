@@ -1,4 +1,3 @@
-import re
 from app.honor.student.games.article_complete import CompleteArticleGame
 from app.honor.student.test_paper.object_page.answer_page import AnswerPage
 from conf.decorator import teststep, teststeps

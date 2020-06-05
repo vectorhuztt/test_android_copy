@@ -6,100 +6,87 @@
 import time
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-
 from app.honor.student.games.all_game_common_element import GameCommonEle
 from app.honor.student.login.object_page.home_page import HomePage
-from app.honor.student.user_center.object_page.user_Info_page import UserInfoPage
-from app.honor.student.user_center.object_page.user_center_page import UserCenterPage
 from conf.base_page import BasePage
 from conf.decorator import teststep
+from utils.wait_element import WaitElement
 
 
 class RankPage(BasePage):
-
-    def __init__(self):
-        self.home = HomePage()
+    wait = WaitElement()
+    home = HomePage()
 
     @teststep
     def wait_check_rank_page(self):
-        locator = (By.ID, self.id_type() + 'tv_order')
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        locator = (By.XPATH, self.id_type() + 'tv_order')
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_name_page(self):
         locator = (By.ID, 'android:id/text1')
-        try:
-            WebDriverWait(self.driver, 10, 0.5).until(lambda x: x.find_elements(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def select_class(self):
-        self.driver.find_element_by_id('android:id/text1').click()
+        locator = (By.ID, 'android:id/text1')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def class_name(self):
-        ele = self.driver.find_elements_by_id("android:id/text1")
-        return ele
+        locator = (By.ID, 'android:id/text1')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def user_name(self):
-        ele = self.driver.find_element_by_id(self.id_type() + "name")
-        return ele
+        locator = (By.ID, self.id_type() + "name")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def user_rank(self):
-        ele = self.driver.find_element_by_id(self.id_type() + 'rank')
-        return ele
+        locator = (By.ID, self.id_type() + "rank")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def cover_title(self):
-        ele = self.driver.find_element_by_id(self.id_type() + 'cover_title_one')
-        return ele
+        locator = (By.ID, self.id_type() + "cover_title_one")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def day_num(self):
-        ele = self.driver.find_element_by_id(self.id_type() + "cover_title_two")
-        return ele
+        locator = (By.ID, self.id_type() + "cover_title_two")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def show_button(self):
-        ele = self.driver.find_element_by_id(self.id_type() + 'share')
-        return ele
+        locator = (By.ID, self.id_type() + "share")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def week_rank(self):
-        ele = self.driver.find_element_by_id(self.id_type() + 'left_title')
-        return ele
+        locator = (By.ID, self.id_type() + "left_title")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def week_punch_days(self):
-        ele = self.driver.find_element_by_id(self.id_type() + 'right_title')
-        return ele
+        locator = (By.ID, self.id_type() + "right_title")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def game_name(self):
-        ele = self.driver.find_elements_by_id(self.id_type() + 'game_name')
-        return ele
+        locator = (By.ID, self.id_type() + "game_name")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def student_names(self):
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_name')
-        return ele
+        locator = (By.ID, self.id_type() + "tv_name")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def days(self, stu_name):
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[contains(@text,"{0}")]/following-sibling::'
-                                                'android.widget.TextView[contains(@resource-id, '
-                                                '"{1}tv_score")]'.format(stu_name, self.id_type()))
-        return ele.text
-
+        locator = (By.XPATH, '//android.widget.TextView[contains(@text,"{0}")]/following-sibling::android.widget.'
+                             'TextView[contains(@resource-id,"{1}tv_score")]'.format(stu_name, self.id_type()))
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def rank_ele_operate(self, name):

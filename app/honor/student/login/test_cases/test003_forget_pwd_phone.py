@@ -5,6 +5,7 @@ import unittest
 from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.login.object_page.login_page import LoginPage
 from app.honor.student.login.test_data.forget_pwd_data import phone_data, pwd_data
+from app.honor.student.punch_activity.object_page.punch_page import PunchActivityPage
 from app.honor.student.user_center.object_page.user_center_page import Setting
 from conf.base_page import BasePage
 from conf.decorator import setup, teardown, testcase, teststeps
@@ -24,6 +25,7 @@ class LoginForgetPhone(unittest.TestCase):
         cls.base_assert = ExpectingTest(cls, cls.result)
         cls.login = LoginPage()
         cls.home = HomePage()
+        cls.punch = PunchActivityPage()
         cls.set = Setting()
         BasePage().set_assert(cls.base_assert)
 
@@ -39,10 +41,11 @@ class LoginForgetPhone(unittest.TestCase):
     @testcase
     def test_forget_pwd(self):
         # 判断APP当前状态
+        self.punch.close_home_activity_tip()
         if self.home.wait_check_home_page():  # 在主界面
             print('已登录')
             self.set.logout_operate()  # 退出登录
-        elif self.login.wait_check_page():  # 在登录界面
+        elif self.login.wait_check_login_page():  # 在登录界面
             print('在登录界面')
         else:
             print('在其他页面')
@@ -51,7 +54,7 @@ class LoginForgetPhone(unittest.TestCase):
             if self.home.wait_check_home_page():  # 在主界面
                 print('已登录')
                 self.set.logout_operate()  # 退出登录
-            elif self.login.wait_check_page():  # 在登录界面
+            elif self.login.wait_check_login_page():  # 在登录界面
                 print('在登录界面')
         
         self.forget_pwd_operate()  # 具体操作
@@ -59,10 +62,9 @@ class LoginForgetPhone(unittest.TestCase):
     @teststeps
     def forget_pwd_operate(self):
         """ 忘记密码 具体操作"""
-        if self.login.wait_check_page():
+        if self.login.wait_check_login_page():
             self.login.forget_password()  # 忘记密码按钮
             if self.login.wait_check_forget_page():
-
                 for i in range(len(phone_data)):
                     print('---------------------------')
                     phone = self.login.input_phone()

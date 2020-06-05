@@ -27,7 +27,7 @@ class CheckPointTest(unittest.TestCase):
         cls.data = PunchSqlHandle()
         cls.home = HomePage()
         BasePage().set_assert(cls.base_assert)
-        cls.login.app_status()
+        cls.login.app_status(close_alert=False)
 
     @teardown
     def tearDown(self):
@@ -37,7 +37,6 @@ class CheckPointTest(unittest.TestCase):
     def run(self, result=None):
         self.result = result
         super(CheckPointTest, self).run(result)
-
 
     @testcase
     def test_checkpoint_activity(self):

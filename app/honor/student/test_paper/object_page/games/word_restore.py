@@ -1,6 +1,3 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-
 from app.honor.student.games.word_restore import RestoreWordGame
 from app.honor.student.test_paper.object_page.answer_page import AnswerPage
 from conf.decorator import teststep, teststeps

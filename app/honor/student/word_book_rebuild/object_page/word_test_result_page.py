@@ -13,72 +13,79 @@ from app.honor.student.word_book_rebuild.object_page.word_test_sql_handler impor
 from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
 from utils.dict_slice import dict_slice
+from utils.wait_element import WaitElement
 
 
 class WordTestResultPage(BasePage):
 
     def __init__(self):
         self.sql_handler = WordTestSqlHandler()
+        self.wait = WaitElement()
 
     @teststep
     def wait_check_test_result_page(self):
         """测试结果页面检查点"""
         locator = (By.ID, self.id_type() + 'head')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_again_btn_page(self):
         locator = (By.ID, self.id_type() + 'again')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def student_test_id(self):
         """当前测试id"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'head')
+        locator = (By.ID, self.id_type() + 'head')
+        ele = self.wait.wait_find_element(locator)
         test_id = json.loads(ele.get_attribute('contentDescription'))['test_id']
         return test_id
 
     @teststep
     def result_score(self):
         """结果得分"""
-        ele = self.driver.find_element_by_id(self.id_type() + "score")
+        locator = (By.ID, self.id_type() + 'score')
+        ele = self.wait.wait_find_element(locator)
         return int(ele.text)
 
     @teststep
     def nickname(self):
         """用户名称"""
-        ele = self.driver.find_element_by_id(self.id_type() + "name")
+        locator = (By.ID, self.id_type() + 'name')
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def test_count_summery(self):
         """测试总数总结"""
-        ele = self.driver.find_element_by_id(self.id_type() + "word_num")
+        locator = (By.ID, self.id_type() + 'word_num')
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def test_record_summery(self):
         """测试记录总结"""
-        ele = self.driver.find_element_by_id(self.id_type() + "record")
+        locator = (By.ID, self.id_type() + 'record')
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def share_btn(self):
         """打卡按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + "clock")
-        return ele
+        locator = (By.ID, self.id_type() + 'clock')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def wrong_again_btn(self):
         """错题再练按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + "again")
-        return ele
+        locator = (By.ID, self.id_type() + 'again')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def result_back_btn(self):
         """结果页后退按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + "back")
-        return ele
+        locator = (By.ID, self.id_type() + 'back')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def db_cal_fvalue_dict_operate(self, stu_id,  word_dict, game_return, is_right=True):
@@ -188,7 +195,7 @@ class WordTestResultPage(BasePage):
             if db_spend_time != int(record_info[2]):
                 self.base_assert.except_error("页面统计时间与实际用时不一致，页面为%d， 实际为%d" % (int(record_info[2]), db_spend_time))
 
-            self.star_score_check_operate(stu_id, pass_word_list, wrong_word_list)
+            # self.star_score_check_operate(stu_id, pass_word_list, wrong_word_list)
 
             if page_score == 100:
                 if self.wait_check_again_btn_page():

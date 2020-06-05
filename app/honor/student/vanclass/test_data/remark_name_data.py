@@ -35,10 +35,10 @@ class_data_test = [
     {'class': ''},
     {'class': '123', 'assert': '班号为4-9位，请重新确认'},
     {'class': '74578'},   # 班级不存在
-    {'class': '50497', 'assert': '该班级已申请'},
+    {'class': '54586', 'assert': '该班级已申请'},
     {'class': '654644'},  # 班级不存在
     {'class': '1234567890', 'assert': '班号为4-9位，请重新确认'},
-    {'class': '47215'}   # 班级正确
+    {'class': '52136'}   # 班级正确
 ]
 
 class_data = class_data_test if gv.TEST_VERSION == 'test' else class_data_dev

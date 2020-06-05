@@ -14,7 +14,7 @@ class ReadUnderstandGame(ClozeGame):
     @teststep
     def wait_check_read_understand_page(self):
         locator = (By.ID, self.id_type() + "rich_text")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def article_understand_lib_hw_operate(self, fq, half_exit, sec_answer=None):

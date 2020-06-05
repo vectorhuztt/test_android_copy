@@ -10,159 +10,138 @@ from app.honor.student.login.object_page.home_page import HomePage
 from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
 from utils.toast_find import Toast
+from utils.wait_element import WaitElement
 
 
 class ResultPage(BasePage):
 
     def __init__(self):
         self.home = HomePage()
+        self.wait = WaitElement()
 
     @teststep
     def wait_check_result_page(self):
         """结果页 以今日已练单词图片的Id为依据"""
         locator = (By.ID, self.id_type() + 'word_count')
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_wx_login_page(self):
         """微信登陆页面检查点"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@text,"登录微信")]')
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_share_page(self):
         """打卡页，以分享图片id为依据"""
         locator = (By.ID, self.id_type() + "share_img")
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_next_grade(self):
         """再来一组 以继续挑战的图片的Id为依据"""
         locator = (By.ID, self.id_type() + "level_up_hint")
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_study_times_limit_page(self):
         """练习次数已用完页面检查点"""
         locator = (By.ID, self.id_type() + "error_img")
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
 
     @teststep
     def date(self):
         """时间日期"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'date')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'date')
+        return self.wait.wait_find_element(locator).text
+
 
     @teststep
     def today_word(self):
         """今日已练单词"""
-        ele = self.driver.find_element_by_id(self.id_type() + "word_count")
-        return ele.text
+        locator = (By.ID, self.id_type() + 'word_count')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def already_remember_word(self):
         """已被单词"""
-        ele = self.driver.find_element_by_id(self.id_type() + "all_word_count")
-        return ele.text
+        locator = (By.ID, self.id_type() + 'all_word_count')
+        return self.wait.wait_find_element(locator).text
+
 
     @teststep
     def word_detail_info(self):
         """复习新词组"""
-        ele = self.driver.find_element_by_id(self.id_type() + "text")
-        return ele.text
-
+        locator = (By.ID, self.id_type() + 'text')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def share_button(self):
         """打卡"""
-        self.driver.\
-            find_element_by_id(self.id_type() + 'punch_clock')\
-            .click()
+        locator = (By.ID, self.id_type() + 'punch_clock')
+        self.wait.wait_find_element(locator).click()
         time.sleep(2)
 
     @teststep
     def rank_button(self):
         """右上角排名按钮"""
-        self.driver.\
-            find_element_by_id(self.id_type() + "rank")\
-            .click()
+        locator = (By.ID, self.id_type() + 'rank')
+        self.wait.wait_find_element(locator).click()
         time.sleep(3)
 
     @teststep
     def more_again_button(self):
         """再来一组"""
         print('再来一组', '\n')
-        self.driver.\
-            find_element_by_id(self.id_type() + "again")\
-            .click()
+        locator = (By.ID, self.id_type() + 'again')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def level_up_text(self):
         """单词已练完说明"""
-        ele = self.driver.find_element_by_id(self.id_type() + "level_up_hint").text
-        print(ele)
-
+        locator = (By.ID, self.id_type() + 'level_up_hint')
+        ele = self.wait.wait_find_element(locator)
+        print(ele.text)
 
     @teststep
     def no_study_btn(self):
         """不练了"""
-        self.driver.\
-            find_element_by_id(self.id_type() + "cancel")\
-            .click()
+        locator = (By.ID, self.id_type() + 'cancel')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def wx_btn(self):
         """微信按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + "weixin")
-        return ele
+        locator = (By.ID, self.id_type() + 'weixin')
+        return self.wait.wait_find_element(locator)
+
 
     @teststep
     def wx_friend(self):
         """朋友圈"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'weixin_friends')
-        return ele
-
+        locator = (By.ID, self.id_type() + 'weixin_friends')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def nex_level_text(self):
-        ele = self.driver.find_element_by_xpath("//android.widget.TextView[@index,0]")
-        print('已选年级 :%s'% ele)
+        locator = (By.XPATH, "//android.widget.TextView[@index,0]")
+        ele = self.wait.wait_find_element(locator)
+        print('已选年级 :%s'% ele.text)
         print('-'*30, '\n')
 
 
     @teststep
     def confirm_button(self):
         """继续练习"""
-        self.driver.\
-            find_element_by_id(self.id_type() + "confirm")\
-            .click()
+        locator = (By.ID, self.id_type() + "confirm")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def wx_back_up_btn(self):
         """微信页面返回按钮"""
-        ele = self.driver.find_element_by_accessibility_id('返回')
-        return ele
+        locator = (By.ACCESSIBILITY_ID, '返回')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def share_page_operate(self):

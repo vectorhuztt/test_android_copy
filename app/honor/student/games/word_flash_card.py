@@ -21,129 +21,129 @@ class FlashCardGame(GameCommonEle):
     def wait_check_flash_study_page(self):
         """学习模式页面检查点"""
         locator = (By.ID, self.id_type() + "side")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_copy_page(self):
         """抄写模式页面检查点 以键盘id作为索引"""
         locator = (By.ID, self.id_type() + "mine_word")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_sentence_page(self):
         """以“闪卡练习 -句子模式”的句子id为依据"""
         locator = (By.ID, self.id_type() + "sentence")
-        return self.get_wait_check_page_result(locator, timeout=3)
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def wait_check_explain_page(self):
         """判断解释是否存在"""
-        try:
-            self.driver.find_element_by_id(self.id_type() + "tv_chinese")
-            return True
-        except:
-            return False
+        locator = (By.ID, self.id_type() + 'tv_chinese')
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def wait_check_flash_result_page(self):
         """结果页页面检查点"""
         locator = (By.XPATH, "//*[@text='完成学习']")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def study_word(self):
         """页面单词"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'tv_english')
+        locator = (By.ID, self.id_type() + 'tv_english')
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def copy_word(self):
         """抄写页面单词"""
-        ele = self.driver.find_element_by_id('{}english'.format(self.id_type()))
+        locator = (By.ID, self.id_type() + 'english')
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def copy_explain(self):
         """抄写模式单词解释"""
-        ele = self.driver.find_element_by_id('{}chinese'.format(self.id_type()))
-        return ele
+        locator = (By.ID, self.id_type() + 'chinese')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def copy_input(self):
         """抄写模式输入答案"""
-        ele = self.driver.find_element_by_id('{}mine_word'.format(self.id_type()))
+        locator = (By.ID, self.id_type() + 'mine_word')
+        ele = self.wait.wait_find_element(locator)
         return ele
 
     @teststep
     def click_voice(self):
         """播放按钮"""
-        self.driver.find_element_by_id(self.id_type() + "play_voice") \
-            .click()
+        locator = (By.ID, self.id_type() + 'play_voice')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def pattern_switch(self):
         """点击右上角的全英/英汉，切换模式"""
-        self.driver \
-            .find_element_by_id(self.id_type() + "side") \
-            .click()
+        locator = (By.ID, self.id_type() + 'side')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def author(self):
         """例句推荐老师"""
-        english = self.driver \
-            .find_element_by_id(self.id_type() + "author")
-        return english.text
+        locator = (By.ID, self.id_type() + 'author')
+        ele = self.wait.wait_find_element(locator)
+        return ele.text
 
     @teststep
     def english_study(self):
         """全英模式 页面内展示的word"""
-        english = self.driver \
-            .find_element_by_id(self.id_type() + "tv_english")
-        return english.text
+        locator = (By.ID, self.id_type() + 'tv_english')
+        ele = self.wait.wait_find_element(locator)
+        return ele.text
 
     @teststep
     def study_word_explain(self):
         """英汉模式 页面内展示的word解释"""
-        explain = self.driver.find_element_by_id(self.id_type() + "tv_chinese")
-        return explain
+        locator = (By.ID, self.id_type() + 'tv_chinese')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def study_sentence(self):
         """全英模式 页面内展示的句子"""
-        english = self.driver \
-            .find_element_by_id(self.id_type() + "sentence").text
-        return english
+        locator = (By.ID, self.id_type() + 'sentence')
+        ele = self.wait.wait_find_element(locator)
+        return ele.text
 
     @teststep
     def study_sentence_explain(self):
         """英汉模式 页面内展示的句子解释"""
-        explain = self.driver \
-            .find_element_by_id(self.id_type() + "sentence_explain").text
-        return explain
+        locator = (By.ID, self.id_type() + 'sentence_explain')
+        ele = self.wait.wait_find_element(locator)
+        return ele.text
 
     @teststep
     def star_button(self):
         """星标按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + "iv_star")
-        return ele
+        locator = (By.ID, self.id_type() + 'iv_star')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def familiar_button(self):
         """熟词按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + "expert")
-        return ele
+        locator = (By.ID, self.id_type() + 'expert')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def change_model_btn(self):
         """英汉切换按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'side')
-        return ele
+        locator = (By.ID, self.id_type() + 'side')
+        return self.wait.wait_find_element(locator)
 
     # 结果页元素
     @teststep
     def study_sum(self):
         """学习统计"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'study_sum')
+        locator = (By.ID, self.id_type() + 'study_sum')
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
@@ -154,67 +154,62 @@ class FlashCardGame(GameCommonEle):
     @teststep
     def study_again(self):
         """再学一遍"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'study_again')
-        return ele
+        locator = (By.ID, self.id_type() + 'study_again')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def study_star_again(self):
         """把标星的单词再练一遍"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'star_again')
-        return ele
+        locator = (By.ID, self.id_type() + 'star_again')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def result_words(self):
         """结果页单词"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_word')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_word')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def word_voice(self, word):
         """单词左侧声音按钮"""
-        ele = self.driver.find_element_by_xpath('//*[@text="{}"]/preceding-sibling::android.widget.ImageView'
-                                                '[contains(@resource-id,"{}iv_voice")]'.format(word, self.id_type()))
-        return ele
+        locator = (By.XPATH, '//*[@text="{}"]/preceding-sibling::android.widget.ImageView'
+                             '[contains(@resource-id,"{}iv_voice")]'.format(word, self.id_type()))
+        return self.wait.wait_find_element(locator, timeout=3)
 
     @teststep
     def word_explain(self, word):
         """单词对应的解释"""
-        ele = self.driver.find_element_by_xpath('//*[@text="{}"]/../following-sibling::android.widget.LinearLayout/'
-                                                'android.widget.TextView'.format(word))
-        return ele.text
+        locator = (By.XPATH, '//*[@text="{}"]/../following-sibling::android.widget.'
+                             'LinearLayout/android.widget.TextView'.format(word))
+        return self.wait.wait_find_element(locator, timeout=3)
 
     @teststep
     def word_star(self, word):
         """单词对应的星标按钮"""
-        ele = self.driver.find_element_by_xpath('//*[@text="{}"]/../../following-sibling::android.widget.ImageView'
-                                                .format(word))
-        return ele
+        locator = (By.XPATH, '//*[@text="{}"]/../../following-sibling::android.widget.ImageView'.format(word))
+        return self.wait.wait_find_element(locator, timeout=5)
 
     @teststep
-    def sentence_voice(self, sentence):
-        """句子左侧喇叭按钮"""
-        ele = self.driver.find_element_by_xpath('//*[@text="{}"]/../preceding-sibling::android.widget.ImageView'
-                                                '[contains(@resource-id,"{}iv_voice")]'.format(sentence, self.id_type()))
-        return ele
+    def sentence_voice(self, word):
+        """句子左侧声音按钮"""
+        locator = (By.XPATH, '//*[@text="{}"]/../preceding-sibling::android.widget.ImageView'.format(word, self.id_type()))
+        return self.wait.wait_find_element(locator, timeout=5)
 
     @teststep
-    def sentence_explain(self, sentence):
+    def sentence_explain(self, word):
         """句子对应的解释"""
-        ele = self.driver.find_element_by_xpath('//*[@text="{}"]/following-sibling::android.widget.TextView'.format(sentence))
-        return ele.text
+        locator = (By.XPATH, '//*[@text="{}"]/following-sibling::android.widget.TextView'.format(word))
+        return self.wait.wait_find_element(locator, timeout=5)
 
     @teststep
-    def sentence_star(self, sentence):
-        """句子的标星"""
-        ele = self.driver.find_element_by_xpath('//*[@text="{}"]/../following-sibling::android.widget.ImageView'
-                                                .format(sentence))
-        return ele
-
+    def sentence_star(self, word):
+        """句子对应的星标按钮"""
+        locator = (By.XPATH, '//*[@text="{}"]/../following-sibling::android.widget.ImageView'.format(word))
+        return self.wait.wait_find_element(locator, timeout=5)
 
     @teststep
-    def flash_card_game_operate(self, fq, half_exit, star_list=None, ):
+    def flash_card_game_operate(self, fq, half_exit, star_list=None):
         """图书馆、作业内闪卡游戏过程"""
-        flash_type = 0
         star_words = [] if fq == 1 else star_list
         if self.wait_check_flash_study_page():
             total_num = self.rest_bank_num()
@@ -236,7 +231,6 @@ class FlashCardGame(GameCommonEle):
                     print('解释：', self.study_word_explain().text)  # 单词解释
 
                 if self.wait_check_sentence_page():
-                    flash_type = 1
                     print("句子：", self.study_sentence())  # 句子
                     print("句子解释：", self.study_sentence_explain())  # 句子解释
                     print("推荐老师：", self.author())  # 推荐老师
@@ -261,11 +255,10 @@ class FlashCardGame(GameCommonEle):
                 print('-' * 20, '\n')
                 self.fab_next_btn().click()
                 time.sleep(2)
-            return total_num, star_words, flash_type
+            return total_num, star_words
 
     @teststep
     def flash_copy_game_operate(self,  fq, half_exit, star_list=None,):
-        flash_type = 1
         star_words = [] if fq == 1 else star_list
         if self.wait_check_copy_page():
             total_num = self.rest_bank_num()
@@ -310,12 +303,12 @@ class FlashCardGame(GameCommonEle):
                     Keyboard().keyboard_operate(s, j)
                 time.sleep(3)
                 print('-' * 30, '\n')
-            return total_num, star_words, flash_type
+            return total_num, star_words
 
     @teststeps
     def flash_card_result_operate(self, flash_result):
         """闪卡结果页面处理"""
-        total, star_words, flash_type = flash_result
+        total, star_words = flash_result
 
         # if self.wait_check_medal_page():
         #     print('获取勋章')
@@ -334,7 +327,7 @@ class FlashCardGame(GameCommonEle):
             if len(star_words) != star_count:
                 self.base_assert.except_error('标星个数与页面统计个数不一致')
 
-            self.cancel_or_add_star(total, star_words, flash_type, cancel=True)
+            self.cancel_or_add_star(total, star_words, cancel=True)
             if self.get_start_sum() != 0:
                 self.base_assert.except_error('单词标星取消，页面标星统计数未发生变化，与实际标星数不一致')
 
@@ -344,12 +337,12 @@ class FlashCardGame(GameCommonEle):
             else:
                 self.base_assert.except_error('未提示没有标星单词')
 
-            self.cancel_or_add_star(total, star_words, flash_type)
+            self.cancel_or_add_star(total, star_words)
             self.study_star_again().click()
 
 
     @teststep
-    def cancel_or_add_star(self, total, star_words, flash_type, cancel=False):
+    def cancel_or_add_star(self, total, star_words, cancel=False):
         """添加或取消标星"""
         word_list = []
         while True:
@@ -362,20 +355,14 @@ class FlashCardGame(GameCommonEle):
                         self.screen_swipe_up(0.5, 0.8, 0.72, 1000)
                     result_word = w.text
                     word_list.append(result_word)
-                    if flash_type:
-                        word_voice = self.word_voice(result_word)
-                        word_explain = self.word_explain(result_word)
-                        word_star = self.word_star(result_word)
-                    else:
-                        word_voice = self.sentence_voice(result_word)
-                        word_explain = self.sentence_explain(result_word)
-                        word_star = self.sentence_star(result_word)
-
-                    word_voice.click()
+                    voice_btn = self.word_voice(result_word) or self.sentence_voice(result_word)
+                    voice_btn.click()
+                    word_explain = self.word_explain(result_word) or self.sentence_explain(result_word)
+                    word_star = self.word_star(result_word) or self.sentence_star(result_word)
 
                     if cancel:
                         print('单词：', result_word)
-                        print('解释', word_explain)
+                        print('解释', word_explain.text)
                         if GetAttribute().get_selected(word_star) == 'true':
                             word_star.click()
                             print('取消标星')

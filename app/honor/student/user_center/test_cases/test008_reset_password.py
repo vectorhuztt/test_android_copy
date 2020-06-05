@@ -30,6 +30,7 @@ class ResetPwd(unittest.TestCase):
         cls.user_info = UserInfoPage()
         cls.pwd = PwdReset()
         BasePage().set_assert(cls.base_assert)
+        cls.login_page.app_status()
 
     @teardown
     def tearDown(self):
@@ -42,8 +43,6 @@ class ResetPwd(unittest.TestCase):
 
     @testcase
     def test_change_password(self):
-        self.login_page.app_status()  # 判断APP当前状态
-
         if self.home.wait_check_home_page():
             self.home.click_tab_profile()  # 进入首页后点击‘个人中心’按钮
 

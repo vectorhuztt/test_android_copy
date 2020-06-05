@@ -12,15 +12,21 @@ class HomeworkGameOperate(BasePage):
         self.library = LibraryGamePage()
 
     @teststeps
-    def homework_game_operate(self, nickname, judge_score=True, has_medal=False, is_activity=False):
-        """作业流程"""
+    def homework_game_operate(self, nickname, *, judge_score=False, has_medal=False, is_activity=False):
+        """
+        作业流程
+        :param nickname:  学生昵称
+        :param judge_score: 是否判断分数
+        :param has_medal: 是否有勋章验证 （图书馆）
+        :param is_activity: 是否是打卡活动
+        :return:
+        """
         if self.library.wait_check_game_page():
             star_count, score_count, total_count = 0, 0, 0
             game_answer = {}
             for x in range(1):
                 if self.library.wait_check_game_page():
-                    game_name, game_result = self.library.play_book_games(x + 1, second_ans=game_answer, nickname=nickname,
-                                                                          half_exit=False)
+                    game_name, game_result = self.library.play_book_games(x + 1, second_ans=game_answer, nickname=nickname)
                     result_info = self.library.result.check_bank_result(game_name, game_result, has_medal=has_medal)
                     if self.library.result.wait_check_result_page():
                         if x == 0:
@@ -36,9 +42,10 @@ class HomeworkGameOperate(BasePage):
                             if score_count > total_count:
                                 score_count = total_count
 
-                        self.library.result.result_multi_data_check(x + 1, result_info, star_count, score_count, judge_score=judge_score)
+                        self.library.result.result_multi_data_check(x + 1, result_info, star_num=star_count,
+                                                                    score_num=score_count, judge_score=judge_score)
                         game_answer = result_info[0]
             if not is_activity:
-                if not self.library.wait_check_bank_list_page():
+                if self.library.wait_check_game_page():
                     self.library.click_back_up_button()
                     self.library.result.all_game.word_spell.tips_operate()

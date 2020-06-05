@@ -32,8 +32,8 @@ class AssignGrindEarHomeWork(AssignHomeworkPage):
             self.select_all_checkbox().click()
             self.join_blanket().click()
             self.tips_operate()
-            self.select_all_checkbox().click()
-            self.join_blanket().click()
+            # self.select_all_checkbox().click()
+            # self.join_blanket().click()
             time.sleep(3)
 
     @teststep

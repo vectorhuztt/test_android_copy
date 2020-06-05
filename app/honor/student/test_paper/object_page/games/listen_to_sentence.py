@@ -1,9 +1,4 @@
-import random
-import re
-import time
-
 from app.honor.student.games.sentence_listen_link import ListenLinkSentenceGame
-from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.test_paper.object_page.answer_page import AnswerPage
 from conf.decorator import teststep, teststeps
 

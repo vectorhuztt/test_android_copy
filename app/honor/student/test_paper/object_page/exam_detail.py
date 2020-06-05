@@ -1,141 +1,140 @@
 from selenium.webdriver.common.by import By
+
 from app.honor.student.games.all_game_init import AllGameClass
 from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.word_book_rebuild.object_page.ranking_page import RankingPage
 from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
+from utils.wait_element import WaitElement
 
 
 class DetailPage(BasePage):
-    def __init__(self):
-        self.rank = RankingPage()
-        self.home = HomePage()
-        self.all_game = AllGameClass()
+    home = HomePage()
+    wait = WaitElement()
+    rank = RankingPage()
+    all_game = AllGameClass()
 
     @teststep
     def wait_check_exam_title_page(self):
         """以 试卷的标题作为 页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'试卷')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststeps
     def wait_check_van_class_list_page(self):
         """班级列表页面检查点"""
         locator = (By.XPATH, "//android.widget.ListView/android.widget.CheckedTextView")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_rank_page(self):
         """以 炫耀一下的text作为 页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'炫耀一下')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_share_page(self):
         """以 分享图片的id作为 页面检查点"""
         locator =(By.ID, "{}share_img".format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_detail_page(self):
         """以 详情页的id作为 页面检查点"""
         locator =(By.ID, "{}status_content_view".format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_again_btn_page(self):
         """以 再练一次的id 作为页面检查点"""
         locator = (By.ID, "{}again".format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_qr_failed_page(self):
         """以 二维码生成失败页面检查点"""
         locator = (By.ID, "{}no_network_view".format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def get_all_text(self):
         """获取所有文本"""
-        ele = self.driver.find_elements_by_class_name('android.widget.TextView')
-        return ele
+        locator = (By.CLASS_NAME, 'android.widget.TextView')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def user_nickname(self):
         """用户昵称"""
-        ele = self.driver.find_element_by_id('{}name'.format(self.id_type()))
-        return ele.text
+        locator = (By.ID, self.id_type() + 'name')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def class_name(self):
         """班级名称"""
-        ele = self.driver.find_elements_by_id('android:id/text1')
-        return ele
+        locator = (By.ID, 'android:id/text1')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def score_got(self):
         """分数"""
-        score = self.driver.find_element_by_id('{}cover_title_two'.format(self.id_type()))
-        return score.text
+        locator = (By.ID, self.id_type() + 'cover_title_two')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def rank_info(self):
         """班级排名"""
-        ele = self.driver.find_element_by_id('{}rank'.format(self.id_type()))
-        return ele.text
+        locator = (By.ID, self.id_type() + 'rank')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def class_students(self):
         """班级学生"""
-        ele = self.driver.find_elements_by_id('{}tv_name'.format(self.id_type()))
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def class_students_score(self):
         """学生获得的分数"""
-        ele = self.driver.find_elements_by_id('{}tv_score'.format(self.id_type()))
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_score')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def check_detail(self):
         """查看详情 按钮"""
-        self.driver \
-            .find_element_by_id("{}detail".format(self.id_type())) \
-            .click()
+        locator = (By.ID, self.id_type() + 'detail')
+        return self.wait.wait_find_element(locator).click()
 
     @teststep
     def ques_type(self):
         """题型名称"""
-        ele = self.driver.find_elements_by_id('{}tv_name'.format(self.id_type()))
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def ques_score(self, var):
         """题型分数"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[contains(@text,"{0}")]/'
-                                                'following-sibling::android.widget.TextView'
-                                                '[contains(@resource-id,"{1}tv_score")]'.format(var, self.id_type()))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[contains(@text,"{0}")]/following-sibling::android.widget.'
+                             'TextView[contains(@resource-id,"tv_score")]'.format(var))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def ques_desc(self, var):
         """题型 描述"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[contains(@text,"{0}")]/'
-                                                'following-sibling::android.widget.TextView'
-                                                '[contains(@resource-id, "{1}tv_desc")]'.format(var, self.id_type()))
-        return ele.text
+        locator = (By.XPATH, '//android.widget.TextView[contains(@text,"{0}")]/following-sibling::android.widget.'
+                             'TextView[contains(@resource-id, "tv_desc")]'.format(var))
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def detail_title(self):
         """试卷详情页 点击分数后的标题"""
-        ele = self.driver.find_element_by_id('{}tv_title'.format(self.id_type()))
-        return ele.text
+        locator = (By.ID, self.id_type() + 'tv_title')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def detail_score(self):
         """题型详情页题目下方的分数描述"""
-        ele = self.driver.find_element_by_id('{}tv_score'.format(self.id_type()))
-        return ele.text
+        locator = (By.ID, self.id_type() + 'tv_score')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def detail_back_to_home(self):

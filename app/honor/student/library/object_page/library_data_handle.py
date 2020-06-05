@@ -45,9 +45,10 @@ class DataHandlePage(BasePage):
         """查询此书籍的书单该学生今日是否已经学习过"""
         book_set_ids = self.mysql.find_book_set_ids(book_name, book_description)
         if book_set_ids:
-            reform_book_set_ids = str(book_set_ids[0][0].split(',')).replace('[', '').replace(']', '')
+            reform_book_set_ids = str(book_set_ids[0][0].split(','))[1:-1]
+            print('书籍下书单id：', reform_book_set_ids)
             book_record = self.mysql.find_student_book_today_study_record(stu_id, reform_book_set_ids)
-            print('book_record', book_record)
+            print('三本书今日是否学习过：', book_record)
             if len(book_record):
                 return True
             else:

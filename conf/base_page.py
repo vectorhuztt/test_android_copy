@@ -1,6 +1,8 @@
 import os
 import time
 
+from selenium.webdriver.common.alert import Alert
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
 from conf.base_config import GetVariable as gv
@@ -38,15 +40,13 @@ class BasePage(object):
     def get_db(self):
         return self.mysql
 
+    def alert_operate(self, accept=True):
+        alert = Alert(self.driver)
+        print(alert.text)
+        alert.accept() if accept else alert.dismiss()
 
-    def get_wait_check_page_result(self, locator, timeout=15):
-        """页面检查点判断方法"""
-        try:
-            WebDriverWait(self.driver, timeout, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
-
+    def click_blank(self):
+        self.driver.tap([(self.get_window_size()[0] * 0.5, 100), ])
 
     def get_window_size(self):
         """获取当前窗口大小"""

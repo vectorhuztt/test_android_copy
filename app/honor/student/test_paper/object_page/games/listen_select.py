@@ -1,11 +1,5 @@
-import random
 import time
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-
 from app.honor.student.games.choice_listen import ListenChoiceGame
-from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.test_paper.object_page.answer_page import AnswerPage
 from conf.decorator import teststep, teststeps
 

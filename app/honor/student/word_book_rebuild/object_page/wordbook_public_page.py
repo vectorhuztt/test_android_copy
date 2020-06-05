@@ -12,35 +12,28 @@ from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
 from utils.games_keyboard import Keyboard
 from utils.get_attribute import GetAttribute
+from utils.wait_element import WaitElement
 
 
 class WorldBookPublicPage(BasePage):
+    wait = WaitElement()
 
     @teststep
     def wait_check_game_title_page(self):
         """游戏标题页面检查点"""
         locator = (By.ID, self.id_type() + 'tv_title')
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_play_voice_page(self):
         """喇叭播放按钮"""
         locator = (By.ID, '{}play_voice'.format(self.id_type()))
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def game_title(self):  # 题型标题
-        title = self.driver\
-            .find_element_by_id(self.id_type() + "tv_title")
-        return title
+        locator = (By.ID, self.id_type() + 'tv_title')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def game_mode_id(self):

@@ -83,7 +83,7 @@ class ScoreRanking(unittest.TestCase):
             self.base_assert.except_error('Error- 默认在 本周页面')
         else:
             print('-------------------本周tab-------------------')
-            if self.van.empty_tips():
+            if self.van.wait_check_empty_tips():
                 print('暂无数据')
             else:
                 self.score_operate()
@@ -100,7 +100,7 @@ class ScoreRanking(unittest.TestCase):
                 self.base_assert.except_error('Error- 未进入 上周页面')
             else:
                 print('-------------------上周tab-------------------')
-                if self.van.empty_tips():
+                if self.van.wait_check_empty_tips():
                     print('暂无数据')
                 else:
                     self.score_operate()
@@ -117,7 +117,7 @@ class ScoreRanking(unittest.TestCase):
                 self.base_assert.except_error('Error- 未进入 本月页面')
             else:
                 print('-------------------本月tab-------------------')
-                if self.van.empty_tips():
+                if self.van.wait_check_empty_tips():
                     print('暂无数据')
                 else:
                     self.score_operate()
@@ -134,7 +134,7 @@ class ScoreRanking(unittest.TestCase):
                 self.base_assert.except_error('Error- 未进入 全部页面')
             else:
                 print('-------------------全部tab-------------------')
-                if self.van.empty_tips():
+                if self.van.wait_check_empty_tips():
                     print('暂无数据')
                 else:
                     self.score_operate()

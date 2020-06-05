@@ -9,78 +9,56 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from app.honor.web.object_pages.base import BaseDriverPage
+from conf.base_web import BaseDriverPage
 from app.honor.web.object_pages.home_page import WebHomePage
 from app.honor.web.object_pages.login_page import LoginWebPage
 from conf.decorator import teststep
+from utils.wait_element import WaitElement
 
 
 class AssignWord(BaseDriverPage):
     def __init__(self):
         self.home = WebHomePage()
+        self.wait = WaitElement()
 
     @teststep
     def wait_check_wordbook_page(self):
         """单词本页面检查点"""
         time.sleep(2)
         locator = (By.XPATH, '//*[text()="单词量排行"]')
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_label_select_page(self):
         """检查是否还有下一级标签"""
         time.sleep(1)
         locator = (By.CLASS_NAME, 'label-list')
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_assign_tip_page(self):
         """布置单词提示页面检查点"""
         time.sleep(1)
         locator = (By.CLASS_NAME, 'el-dialog__body')
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_alert_tip_page(self):
         """弹框提示页面检查点"""
         time.sleep(1)
         locator = (By.CLASS_NAME, 'el-message-box__content')
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_class_page(self):
         locator = (By.XPATH, "//*[text()=' 邀请学生']")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_word_page(self):
         time.sleep(2)
         locator = (By.XPATH, "//*[text()='选择单词 ']")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_apply_students_page(self):

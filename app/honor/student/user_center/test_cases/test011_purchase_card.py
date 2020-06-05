@@ -7,6 +7,7 @@ import unittest
 
 from app.honor.student.login.object_page.login_page import LoginPage
 from app.honor.student.user_center.object_page.buy_card_page import PurchasePage
+from conf.base_page import BasePage
 from conf.decorator import setupclass, teardownclass, teststeps, teardown
 from utils.assert_func import ExpectingTest
 
@@ -21,7 +22,8 @@ class PurchaseCard(unittest.TestCase):
         cls.base_assert = ExpectingTest(cls, cls.result)
         cls.login = LoginPage()
         cls.buy = PurchasePage()
-        cls.login.set_assert(cls.base_assert)
+        BasePage().set_assert(cls.base_assert)
+        cls.login.app_status()
 
     @teardown
     def tearDown(self):
@@ -34,8 +36,6 @@ class PurchaseCard(unittest.TestCase):
 
     @teststeps
     def test_purchase_card(self):
-        self.login.app_status()  # 判断APP当前状态
-
         if self.buy.home.wait_check_home_page():
             self.buy.home.click_tab_profile()  # 进入首页后点击‘个人中心’按钮
 

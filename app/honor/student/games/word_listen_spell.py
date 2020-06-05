@@ -16,44 +16,44 @@ class ListenSpellGame(GameCommonEle):
     @teststep
     def wait_check_listen_spell_word_page(self):
         locator = (By.ID, self.id_type() + 'underline')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_answer_word_page(self):
         """判断 答案是否展示"""
         locator = (By.ID, self.id_type() + "tv_answer")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def click_voice(self):
         """声音按钮"""
-        self.driver. \
-            find_element_by_id(self.id_type() + 'play_voice')\
-            .click()
+        locator = (By.ID, self.id_type() + "play_voice")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def input_word(self):
         """完成的单词"""
-        word = self.driver.find_element_by_id(self.id_type() + 'tv_word')
-        return word.text[::2]
+        locator = (By.ID, self.id_type() + "tv_word")
+        ele = self.wait.wait_find_element(locator)
+        return ele.text[::2]
 
     @teststep
     def word_explain(self):
         """单词解释"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'tv_explain')
-        return ele
+        locator = (By.ID, self.id_type() + "tv_explain")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def right_answer(self):
         """拼写单词答案"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'tv_answer')
-        return ele.text
+        locator = (By.ID, self.id_type() + "tv_answer")
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def input_wrap_side(self):
         """单词听写输入栏外侧"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'll_container')
-        return ele
+        locator = (By.ID, self.id_type() + "ll_container")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def listen_spell_play_operate(self, do_right=False, right_answer=None):

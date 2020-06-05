@@ -28,22 +28,22 @@ class GetVariable(object):
     REPORT_ROOT = 'storges/test_report'
 
     # 以下为 devices.py 配置信息
-    PACKAGE = 'student_env_devMasterDebug_1.4.8-5.apk'
+    PACKAGE = 'student_env_testMasterDebug_1.4.8.apk'
 
     ID_TYPE = 'com.vanthink.student.debug:id/'
     # case统计 配置信息
     SUIT_PATH = 'app'
     CASE_INFO = [
-        # ('app/honor/student/login/test_cases', 'test0*.py'),
+        # ('app/honor/student/login/test_cases', 'test00[2-7]*.py'),
         # ('app/honor/student/listen_everyday/test_cases', 'test0*.py'),
         # ('app/honor/student/user_center/test_cases', 'test*.py'),
         # ('app/honor/student/vanclass/test_cases', 'test0*.py'),
-        # ('app/honor/student/library/test_cases', 'test002*.py'),
-        # ('app/honor/student/test_paper/test_cases', 'test0*.py'),
-        # ('app/honor/student/word_book_rebuild/test_cases', 'test011*.py'),
+        # ('app/honor/student/library/test_cases', 'test001*.py'),
+        # ('app/honor/student/test_paper/test_cases', 'test002*.py'),
+        # ('app/honor/student/word_book_rebuild/test_cases', 'test00[4,6]*.py'),
         # ('app/honor/student/word_book_rebuild/test_cases', 'test002*.py'),
-        # ('app/honor/student/punch_activity/test_cases', 'test001*.py'),
-        ('app/honor/student/homework_rebuild/test_cases', 'test001*.py'),
+        ('app/honor/student/punch_activity/test_cases', 'test001*.py'),
+        # ('app/honor/student/homework_rebuild/test_cases', 'test001*.py'),
         # ('app/honor/student/homework_rebuild/test_cases', 'test002*.py')
             ]
 
@@ -65,14 +65,3 @@ class GetVariable(object):
 
     # 做题情况统计 Excel表格存放路径
     EXCEL_PATH = 'storges/games_result_info.xlsx'
-
-    # 学生的ID
-    STU_ID = 0
-    # 需要测试的单词熟练度
-    LEVEL = 1
-    # 需改动的时间数
-    TIME_COUNT = 0
-    # 年级
-    GRADE = '四年级'
-    # 试卷的索引
-    EXAM_INDEX = -1

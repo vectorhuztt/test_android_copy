@@ -5,12 +5,11 @@ from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.login.object_page.login_page import LoginPage
 from app.honor.student.test_paper.object_page.exam_sql_handle import DataPage
 from app.honor.student.test_paper.object_page.exam_page import ExamPage
-from app.honor.student.user_center.object_page.user_center_page import UserCenterPage
-from app.honor.web.object_pages.driver import Driver
 from app.honor.web.object_pages.resign_exam_page import ResignExamPage
 from conf.base_page import BasePage
 from conf.decorator import setup, teardown, testcase
 from utils.assert_func import ExpectingTest
+from utils.web_driver import GetWebDriver
 
 
 class ExamProcess(unittest.TestCase):
@@ -42,13 +41,9 @@ class ExamProcess(unittest.TestCase):
     def test_play_exam_game_progress(self):
         """做试卷"""
         # 删除所有试卷 重新布置
-        # if self.home.wait_check_home_page():
-        #     stu_id = UserCenterPage().get_user_info()[0]
-        #     self.common.delete_student_exam_record(stu_id)
-        #
-        # web_driver = Driver()
+        # web_driver = GetWebDriver()
         # web_driver.set_driver()
-        ResignExamPage().reassign_exam_operate()      # web端随机布置一套试卷
+        # ResignExamPage().reassign_exam_operate()      # web端随机布置一套试卷
         # web_driver.quit_web()
 
         if self.home.wait_check_home_page():          # 页面检查点

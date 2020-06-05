@@ -6,77 +6,77 @@
 import time
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-
-from app.honor.student.login.object_page.home_page import HomePage
 from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
+from utils.wait_element import WaitElement
 
 
 class AnswerPage(BasePage):
     """小题页面"""
+    wait = WaitElement()
 
     @teststep
     def wait_check_answers_page(self):
         """以 答题卷 的标题 作为 页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'提交并查看结果')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_confirm_tip_page(self):
         """以 确认交卷 的text作为 页面检查点"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'确认交卷')]")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_tip_name(self, t_name):
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'%s')]" % t_name)
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def answer_check_button(self):
         """查看结果按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'answercard')
-        return ele
+        locator = (By.ID, self.id_type() + 'answercard')
+        return self.wait.wait_find_element(locator)
 
+    @teststep
     def question_titles(self):
         """获取题型名称"""
-        ele = self.driver.find_elements_by_id(self.id_type() + "tv_sheet_title")
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_sheet_title')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def question_index(self):
         """题目的序号"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'rtv_num')
-        return ele
+        locator = (By.ID, self.id_type() + 'rtv_num')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def tip_index(self, var):
         """获取序号为1 的题"""
-        ele = self.driver.find_elements_by_xpath('//android.widget.TextView[contains(@text,"%s")]/../'
-                                                 'following-sibling::android.support.v7.widget.RecyclerView/'
-                                                 'android.widget.FrameLayout/android.widget.TextView' % var)
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[contains(@text,"%s")]/../following-sibling::android.'
+                             'support.v7.widget.RecyclerView/android.widget.FrameLayout/android.widget.TextView' % var)
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def ques_num(self, var):
         """获取题目 的题数描述"""
-        locator = '//android.widget.TextView[contains(@text,"{0}")]/following-sibling::' \
-                  'android.widget.TextView[contains(@resource-id,"{1}tv_sheet_num")]'.format(var, self.id_type())
-
-        ele = self.driver.find_element_by_xpath(locator)
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}" and contains(@resource-id, "tv_sheet_title")]'
+                             '/following-sibling::android.widget.TextView[contains(@resource-id, '
+                             '"tv_sheet_num")]'.format(var))
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def exam_submit(self):
         """试卷提交"""
-        self.driver.find_element_by_id(self.id_type() + 'tv_submit').click()
+        locator = (By.ID, self.id_type() + 'tv_submit')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def submit_confirm(self):
         """试卷 提交确认"""
-        self.driver.find_element_by_id(self.id_type() + 'md_buttonDefaultPositive') \
-            .click()
+        locator = (By.ID, self.id_type() + 'md_buttonDefaultPositive')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def wait_result_btn_enabled(self):

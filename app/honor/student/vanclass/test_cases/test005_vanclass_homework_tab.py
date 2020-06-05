@@ -86,7 +86,7 @@ class VanclassHw(unittest.TestCase):
             self.base_assert.except_error('Error- 未默认在 全部页面')
         else:
             print('-------------------全部tab-------------------')
-            if self.van.empty_tips():
+            if self.van.wait_check_empty_tips():
                 print('暂无数据')
             else:
                 self.hw_list_operate()
@@ -103,7 +103,7 @@ class VanclassHw(unittest.TestCase):
                 self.base_assert.except_error('Error- 未进入 未完成 tab页')
             else:
                 print('-------------------未完成tab-------------------')
-                if self.van.empty_tips():
+                if self.van.wait_check_empty_tips():
                     print('暂无数据')
                 else:
                     self.hw_list_operate()
@@ -120,7 +120,7 @@ class VanclassHw(unittest.TestCase):
                 self.base_assert.except_error('Error- 未进入 已完成 tab页')
             else:
                 print('-------------------已完成tab-------------------')
-                if self.van.empty_tips():
+                if self.van.wait_check_empty_tips():
                     print('暂无数据')
                 else:
                     self.hw_list_operate()

@@ -11,85 +11,79 @@ from selenium.webdriver.support import expected_conditions as EC
 from app.honor.web.object_pages.home_page import WebHomePage
 from app.honor.web.object_pages.login_page import LoginWebPage
 from conf.decorator import teststep, teststeps
+from utils.wait_element import WaitElement
 
 
 class AssignHomeworkPage(WebHomePage):
+    wait = WaitElement()
 
     @teststep
     def wait_check_bank_pool_page(self):
         """题库页面检查点"""
         time.sleep(2)
         locator = (By.XPATH, '//*[contains(text(),"推荐到学校")]')
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+        self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_bank_list_page(self):
         """大题列表页面检查点"""
         time.sleep(2)
         locator = (By.CLASS_NAME, 'el-cascader__label')
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(EC.visibility_of_element_located(locator))
-            return True
-        except:
-            return False
+        self.wait.wait_check_element(locator)
 
     @teststep
     def nav_bars(self):
         """头部按钮"""
-        ele = self.driver.find_elements_by_css_selector('.nav a')
-        return ele
+        locator = (By.CSS_SELECTOR, '.nav a')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def type_tab(self):
         """题型选项"""
-        ele = self.driver.find_elements_by_css_selector('.tab-group .tab')
-        return ele
+        locator = (By.CSS_SELECTOR, '.tab-group .tab')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def all_type_selector(self):
         """所有分类下拉按钮"""
-        ele = self.driver.find_element_by_css_selector('.el-cascader__label')
-        return ele
+        locator = (By.CSS_SELECTOR, '.el-cascader__label')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def type_name_list(self):
         """类型列表"""
-        ele = self.driver.find_elements_by_css_selector('.el-cascader-menu  .el-cascader-menu__item--extensible')
-        return ele
+        locator = (By.CSS_SELECTOR, '.el-cascader-menu  .el-cascader-menu__item--extensible')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def game_name_list(self):
         """游戏名称列表"""
-        ele = self.driver.find_elements_by_css_selector('.el-cascader-menus > ul:nth-child(2) li')
-        return ele
+        locator = (By.CSS_SELECTOR, '.el-cascader-menus > ul:nth-child(2) li')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def bank_list(self):
         """大题列表"""
-        ele = self.driver.find_elements_by_css_selector('.testbank-name .title')
-        return ele
+        locator = (By.CSS_SELECTOR, '.testbank-name .title')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def homework_name_input_warp(self):
         """作业名称输入栏"""
-        ele = self.driver.find_element_by_css_selector('.el-input__inner[placeholder="请填写作业名称"]')
-        return ele
+        locator = (By.CSS_SELECTOR, '.el-input__inner[placeholder="请填写作业名称"]')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def publish_homework(self):
         """发布作业"""
-        self.driver.find_element_by_css_selector('.controls .el-button').click()
+        locator = (By.CSS_SELECTOR, '.controls .el-button')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def get_bank_label(self, bank_name):
         """根据大题名称获取大题checkbox"""
-        ele = self.driver.find_element_by_xpath('//*[contains(text(),"{}")]/../preceding-sibling::label/span/span'.format(bank_name))
-        return ele
-
+        locator = (By.XPATH, '//*[contains(text(),"{}")]/../preceding-sibling::label/span/span'.format(bank_name))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def delete_homework_operate(self, hw_name):

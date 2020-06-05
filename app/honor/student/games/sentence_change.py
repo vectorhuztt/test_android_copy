@@ -19,37 +19,41 @@ class SentenceChangeGame(SentenceLinkGame):
     def wait_check_exchange_sentence_page(self):
         """句型转换页面检查点，以输入答案的id作为依据"""
         locator = (By.ID, self.id_type() + "rv_answer")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def text_bottom(self):
         """下方后补选择文本"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'rv_hint')
+        locator = (By.ID, self.id_type() + 'rv_hint')
+        ele = self.wait.wait_find_element(locator)
         return ele.find_elements_by_xpath('.//android.widget.TextView')
 
     @teststep
     def input_text(self):
         """需要填空的文本"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'rv_answer')
+        locator = (By.ID, self.id_type() + 'rv_answer')
+        ele = self.wait.wait_find_element(locator)
         return ele.find_elements_by_xpath('.//android.widget.TextView')
 
     @teststep
     def sentence_question(self):
         """问题"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_question')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_question')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def sentence_answer(self):
         """提交后的答案"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'tv_answer')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'tv_answer')
+        return self.wait.wait_find_element(locator).text
+
 
     @teststep
     def finish_answer_list(self):
         """已完成的句子"""
-        ele = self.driver.find_elements_by_xpath('//android.support.v7.widget.RecyclerView[contains(@resource-id, "rv_answer")]/'
-                                                 'android.widget.LinearLayout/android.widget.TextView')
+        locator = (By.XPATH, '//android.support.v7.widget.RecyclerView[contains(@resource-id, "rv_answer")]/'
+                             'android.widget.LinearLayout/android.widget.TextView')
+        ele = self.wait.wait_find_elements(locator)
         answer_array = [x.text for x in ele]
         return answer_array
 
@@ -57,8 +61,9 @@ class SentenceChangeGame(SentenceLinkGame):
     @teststep
     def group_question(self, index):
         """句型转换的问题"""
-        ele = self.driver.find_element_by_xpath("//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']//"
-                                                "android.widget.TextView[contains(@resource-id, 'tv_question')]".format(index))
+        locator = (By.XPATH, "//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']//"
+                             "android.widget.TextView[contains(@resource-id, 'tv_question')]".format(index))
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep

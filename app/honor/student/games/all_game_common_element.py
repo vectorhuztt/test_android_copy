@@ -11,115 +11,127 @@ from conf.decorator import teststep, teststeps
 from utils.games_keyboard import Keyboard
 from utils.get_attribute import GetAttribute
 from utils.toast_find import Toast
+from utils.wait_element import WaitElement
 
 
 class GameCommonEle(BasePage):
-
-    def __init__(self):
-        self.keyboard = Keyboard()
+    keyboard = Keyboard()
+    wait = WaitElement()
 
     """游戏公共元素"""
     @teststep
     def wait_check_end_tip_page(self):
         """游戏标题页面检查点"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@text, "到底啦 下拉刷新试试")]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_commit_btn_page(self):
         """提交按钮处页面检查点"""
         locator = (By.ID, self.id_type() + 'fab_commit')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_share_area_page(self):
         """分享页面检查点"""
         locator = (By.ID, '{}share_area'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_punch_share_page(self):
         """分享页面检查点"""
         locator = (By.ID, '{}share_img'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator, timeout=5)
+
+    @teststep
+    def wait_check_select_friend_page(self):
+        """选择好友与群页面"""
+        locator = (By.XPATH, "//android.widget.Button[@text='多选']")
+        return self.wait.wait_check_element(locator, timeout=5)
+
+    @teststep
+    def wait_check_friend_circle_page(self):
+        """发表朋友圈页面"""
+        locator = (By.XPATH, "//android.widget.Button[@text='发表']")
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_login_wechat_page(self):
         """微信登陆页面"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@text,"登录微信")]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator, timeout=5)
+
+    @teststep
+    def wait_check_wechat_alert_tip_page(self):
+        """弹框提示页面检查点"""
+        locator = (By.XPATH, '//android.widget.TextView[contains(@text,"保留此次编辑")]')
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def wait_check_game_title_page(self):
         """游戏标题页面检查点"""
         locator = (By.ID, self.id_type() + 'tv_title')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_word_container_by_index_and_id(self, index):
         """单词容器获取依据"""
         locator = (By.XPATH, "//*[@content-desc='{}' and contains(@resource-id, 'item_container')]".format(index))
-        return self.get_wait_check_page_result(locator, timeout=2)
+        return self.wait.wait_check_element(locator, timeout=2)
 
     @teststep
     def wait_check_sentence_container_by_content_desc(self, index):
         """句子容器获取依据"""
         locator = (By.XPATH, "//android.widget.LinearLayout[@content-desc='{}']".format(index))
-        return self.get_wait_check_page_result(locator, timeout=2)
+        return self.wait.wait_check_element(locator, timeout=2)
 
     @teststep
     def wait_check_article_container_by_index(self, index):
         """文章类游戏容器获取依据"""
         locator = (By.XPATH, "//android.widget.LinearLayout[@index='{}']/android.view.ViewGroup".format(index))
-        return self.get_wait_check_page_result(locator, timeout=2)
+        return self.wait.wait_check_element(locator, timeout=2)
 
     @teststep
     def wait_check_tips_page(self):
         """提示页面检查点"""
         locator = (By.ID, '{}md_title'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_play_voice_page(self):
         """喇叭播放按钮"""
         locator = (By.ID, '{}play_voice'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_dragger_btn(self):
         """检查页面是否存在拖拽按钮"""
         locator = (By.ID, self.id_type() + "dragger")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_rich_text_page(self):
         """文章类游戏富文本元素页面检查点"""
         locator = (By.ID, '{}rich_text'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_keyboard_page(self):
         """键盘页面检查"""
         locator = (By.ID, '{}keyboard_abc_view'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_permit_tab_page(self):
         """存储允许"""
         locator = (By.ID, 'com.android.packageinstaller:id/permission_message')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
-    @teststep
-    def always_permit_allow_btn(self):
-        """始终允许按钮"""
-        ele = self.driver.find_element_by_id('com.android.packageinstaller:id/permission_allow_button')
-        return ele
 
     @teststep
     def game_title(self):  # 题型标题
-        title = self.driver \
-            .find_element_by_id(self.id_type() + "tv_title")
-        return title
+        locator = (By.ID, self.id_type() + 'tv_title')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def game_mode_id(self):
@@ -131,61 +143,44 @@ class GameCommonEle(BasePage):
     @teststep
     def hide_keyboard_btn(self):
         """键盘隐藏按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'keyboard_hide')
-        return ele
+        locator = (By.ID, self.id_type() + 'keyboard_hide')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def rich_text(self):
         """文章类游戏文章文本"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'rich_text')
-        return ele
+        locator = (By.ID, self.id_type() + 'rich_text')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def question(self):
         """游戏问题"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'question')
-        return ele
-
-    @teststep
-    def get_opt_text_by_ques(self, ques):
-        """根据问题获取选项"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text()="{}"]/android.widget.TextView[contains[@resource-id, '
-                                                '"tv_item"]]'.format(ques))
-        return ele
-
-    @teststep
-    def get_opt_char_by_ques(self, ques):
-        """根据问题获取选项字母"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text()="{}"]/android.widget.TextView[contains[@resource-id, '
-                                                '"tv_char"]]'.format(ques))
-        return ele
-
+        locator = (By.ID, self.id_type() + 'question')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def clear_btn(self):
         """清除按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'bt_clear')
-        return ele
+        locator = (By.ID, self.id_type() + 'bt_clear')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def tips_content(self):
         """提示 具体内容"""
-        item = self.driver \
-            .find_element_by_id(self.id_type() + "md_content")
-        return item.text
+        locator = (By.ID, self.id_type() + "md_content")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def click_confirm_btn(self):
         """确定 按钮"""
-        self.driver \
-            .find_element_by_id(self.id_type() + "md_buttonDefaultPositive") \
-            .click()
+        locator = (By.ID, self.id_type() + "md_buttonDefaultPositive")
+        self.wait.wait_find_element(locator).click()
 
     @teststeps
     def tips_operate(self):
         """提示信息处理"""
         if self.wait_check_tips_page():
-            print(self.tips_content(), '\n')
+            # self.alert_operate()
             self.click_confirm_btn()  # 确定按钮
             time.sleep(2)
 
@@ -199,93 +194,98 @@ class GameCommonEle(BasePage):
     @teststep
     def fab_next_btn(self):
         """下一步按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'fab_next')
-        return ele
+        locator = (By.ID, self.id_type() + 'fab_next')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def fab_commit_btn(self):
         """下一步提交按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'fab_commit')
-        return ele
+        locator = (By.ID, self.id_type() + 'fab_commit')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def commit_without_fab_btn(self):
         """下一步提交按钮不带fab"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'commit')
-        return ele
+        locator = (By.ID, self.id_type() + 'commit')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def opt_options(self):
         """选项 文本"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_item')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_item')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def opt_char(self):
         """选项 字母 ABCD"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_char')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_char')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def sound_icon(self):
         """喇叭按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'sound')
-        return ele
+        locator = (By.ID, self.id_type() + 'sound')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def drag_btn(self):
         """拖拽按钮"""
-        ele = self.driver.find_element_by_id('{}dragger'.format(self.id_type()))
-        return ele
+        locator = (By.ID, '{}dragger'.format(self.id_type()))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def font_middle(self):
         """第一个Aa"""
-        ele = self.driver.find_element_by_id(self.id_type() + "font_middle")
-        return ele
+        locator = (By.ID, self.id_type() + "font_middle")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def font_large(self):
         """第二个Aa"""
-        ele = self.driver.find_element_by_id(self.id_type() + "font_large")
-        return ele
+        locator = (By.ID, self.id_type() + "font_large")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def font_great(self):
         """第三个Aa"""
-        ele = self.driver.find_element_by_id(self.id_type() + "font_great")
-        return ele
+        locator = (By.ID, self.id_type() + "font_great")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def wechat(self):
         """微信"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'weixin')
-        return ele
+        locator = (By.ID, self.id_type() + 'weixin')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def friends(self):
         """朋友圈"""
-        ele = self.driver.find_element_by_id(self.id_type() + "weixin_friends")
-        return ele
+        locator = (By.ID, self.id_type() + "weixin_friends")
+        return self.wait.wait_find_element(locator)
+
+    @teststep
+    def not_save_btn(self):
+        """不保留按钮"""
+        locator = (By.XPATH, "//android.widget.Button[contains(@text, '不保留')]")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def download(self):
         """保存图片"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'save_img')
-        return ele
+        locator = (By.ID, self.id_type() + 'save_img')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def wechat_back_up_btn(self):
         """微信页面退回按钮"""
-        ele = self.driver.find_element_by_accessibility_id('返回')
-        return ele
-
+        locator = (By.ACCESSIBILITY_ID, '返回')
+        return self.wait.wait_find_element(locator)
 
     @teststeps
     def get_rich_text_input_count(self):
         """获取需要输入的个数"""
         sentence_desc = self.rich_text().get_attribute('contentDescription')
-        input_num = len([x for x in sentence_desc.split('##')[1].split('  ') if x != ''])
+        input_num = len([x for x in sentence_desc.split('##')[2].split(';') if x])
         return input_num
 
     @teststep
@@ -297,13 +297,14 @@ class GameCommonEle(BasePage):
     @teststep
     def rest_bank_num(self):
         """待完成题数"""
-        ele = self.driver.find_element_by_id('{}rate'.format(self.id_type()))
-        return int(ele.text)
+        locator = (By.ID, '{}rate'.format(self.id_type()))
+        return int(self.wait.wait_find_element(locator).text)
 
     @teststep
     def bank_time(self):
         """题目时间"""
-        ele = self.driver.find_element_by_id('{}time'.format(self.id_type()))
+        locator = (By.ID, '{}time'.format(self.id_type()))
+        ele = self.wait.wait_find_element(locator)
         time_str = re.findall(r'\d', ele.text)
         return int(time_str[0]) * 3600 + int(time_str[1]) * 60 + int(time_str[2]) * 10 + int(time_str[3])
 
@@ -369,7 +370,7 @@ class GameCommonEle(BasePage):
     @teststep
     def get_ques_opt_scale(self):
         """获取包含题目或只有选项的屏幕占比"""
-        ques_text = self.question()[0].text
+        ques_text = self.question().text
         ques_bank = self.driver.find_element_by_xpath('//*[@text="{}"]/..'.format(ques_text))
         ques_options = self.driver.find_element_by_xpath('//*[@text="{}"]/following-sibling::android.view.ViewGroup'.format(ques_text))
         screen_height = self.get_window_size()[1]
@@ -412,21 +413,24 @@ class GameCommonEle(BasePage):
         """分享页面具体操作"""
         if self.wait_check_punch_share_page():
             self.wechat().click()
-            if not self.wait_check_login_wechat_page():
+
+            if not (self.wait_check_login_wechat_page() or self.wait_check_select_friend_page()):
                 self.base_assert.except_error('未跳转到微信登录页面')
             self.wechat_back_up_btn().click()
 
             if self.wait_check_punch_share_page():
                 self.friends().click()
-                if not self.wait_check_login_wechat_page():
+                if not (self.wait_check_login_wechat_page() or self.wait_check_friend_circle_page()):
                     self.base_assert.except_error('未跳转到微信登录页面')
                 self.wechat_back_up_btn().click()
+                if self.wait_check_wechat_alert_tip_page():
+                    self.not_save_btn().click()
 
             if self.wait_check_punch_share_page():
                 self.download().click()
                 if not Toast().find_toast('已保存到本地'):
                     if self.wait_check_permit_tab_page():
-                        self.always_permit_allow_btn().click()
+                        self.alert_operate()
                         if not Toast().find_toast('已保存到本地'):
                             self.base_assert.except_error('未发现保存图片提示')
                     else:

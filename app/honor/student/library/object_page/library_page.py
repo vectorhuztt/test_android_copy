@@ -14,6 +14,7 @@ from app.honor.student.library.object_page.library_h5_page import H5SharePage
 from app.honor.student.login.object_page.home_page import HomePage
 from conf.decorator import teststep, teststeps
 from utils.toast_find import Toast
+from utils.wait_element import WaitElement
 
 
 class LibraryPage(LibraryGamePage):
@@ -25,141 +26,141 @@ class LibraryPage(LibraryGamePage):
     def wait_check_library_page(self, school_name):
         """图书馆页面检查点"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@text,"{}-图书馆")]'.format(school_name))
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_test_label_page(self, label_name):
         """测试标签页面检查点"""
         locator = (By.XPATH, '//android.widget.TextView[@text="{}"]'.format(label_name))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_test_book_page(self, book_name):
         """测试图书页面检查点"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@resource-id, "book_name") and @text="{}"]'.format(book_name))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_end_tip_page(self):
         """到底了页面提示检查点"""
         locator = (By.XPATH, '//android.widget.TextView[contains(@text,"到底啦 下拉刷新试试")]')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_no_data_reload_page(self):
         """重现加载页面检查点"""
         locator = (By.ID, self.id_type() + 'status_error_hint_view')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
 
     @teststep
     def course_more_btn(self, course_type):
         """每种图书下的查看更多按钮"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[contains(@resource-id, "hint_text") and @text="{}"]/'
-                                                'following-sibling::android.widget.TextView'.format(course_type))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[contains(@resource-id, "hint_text") and @text="{}"]/'
+                             'following-sibling::android.widget.TextView'.format(course_type))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def label_name(self):
         """图书标签名称"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'hint_text')
-        return ele
+        locator = (By.ID, self.id_type() + 'hint_text')
+        return self.wait.wait_find_element(locator)
 
     # 书籍页面元素
     @teststep
     def wait_check_book_page(self):
         """书单等待页面"""
         locator = (By.ID, self.id_type() + 'book_title')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_find_element(locator, timeout=5)
 
     @teststep
     def book_names(self):
         """图书名称"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'book_name')
-        return ele
+        locator = (By.ID, self.id_type() + 'book_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def book_title(self):
         """书单标题"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'book_title')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'book_title')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def book_set_num(self):
         """图书统计"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'book_num')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'book_num')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def book_summary(self):
         """书单描述"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'book_summary')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'book_summary')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def test_book(self, book_name):
         """测试书籍"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[contains(@resource-id, "book_name") '
-                                                'and @text="{}"]'.format(book_name))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[contains(@resource-id, "book_name") '
+                             'and @text="{}"]'.format(book_name))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def get_book_process_by_name(self, book_name):
         """根据书单名称获取书单进度"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="{}"]/../following-sibling::android.widget.RelativeLayout//'
-                                                'android.widget.TextView'.format(book_name))
-        return ele.text
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]/../following-sibling::android.widget.RelativeLayout'
+                             '//android.widget.TextView'.format(book_name))
+        return self.wait.wait_find_element(locator).text
 
     # 书单页面
     @teststep
     def wait_check_book_set_page(self):
         """书单页面检查点"""
         locator = (By.ID, self.id_type() + 'sign')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_no_rank_page(self):
         locator = (By.ID, self.id_type() + 'no_rank')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     def wait_check_user_name_page(self, nickname):
         """检查图书页面是否存在用户名"""
         locator = (By.XPATH, '//android.widget.TextView[@resource-id="{}name" and @text="{}"]'.format(self.id_type(), nickname))
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def punch_share_btn(self):
         """立即打卡按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'sign')
-        return ele
+        locator = (By.ID, self.id_type() + 'sign')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def share_btn(self):
         """分享按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'share')
-        return ele
+        locator = (By.ID, self.id_type() + 'share')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def user_process(self, nickname):
         """学生本书单的进度"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@resource-id="{}name" and @text="{}"]/following-sibling::'
-                                                'android.widget.LinearLayout//android.widget.TextView'
-                                                '[contains(@resource-id, "progress_num")]'.format(self.id_type(), nickname))
+        locator = (By.XPATH, '//android.widget.TextView[@resource-id="{}name" and @text="{}"]/following-sibling::'
+                             'android.widget.LinearLayout//android.widget.TextView'
+                             '[contains(@resource-id, "progress_num")]'.format(self.id_type(), nickname))
+        ele = self.wait.wait_find_element(locator)
         return ele.text
-
 
     @teststep
     def user_like_btn(self, nickname):
         """学生排行点赞按钮"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@resource-id="{}name" and @text="{}"]/following-sibling::'
-                                                'android.widget.TextView[contains(@resource-id, "like")]'.format(self.id_type(), nickname))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[@resource-id="{}name" and @text="{}"]/following-sibling::'
+                             'android.widget.TextView[contains(@resource-id, "like")]'.format(self.id_type(), nickname))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def start_study_button(self):
         """开始/继续学习按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'sign_bottom')
-        return ele
+        locator = (By.ID, self.id_type() + 'sign_bottom')
+        return self.wait.wait_find_element(locator)
 
     @teststeps
     def select_test_book_operate(self, test_book_name):
@@ -241,13 +242,13 @@ class LibraryPage(LibraryGamePage):
 
 
     @teststeps
-    def from_bank_back_to_home_operate(self, school_name):
+    def from_bank_back_to_home_operate(self, school_name, label_name):
         """从书籍大题页面返回主页面"""
         if self.wait_check_book_set_page():
             self.click_back_up_button()
             if self.wait_check_book_page():
                 self.click_back_up_button()
-                if self.wait_check_top_name_page('其他'):
+                if self.wait_check_top_name_page(label_name):
                     self.click_back_up_button()
                     if self.wait_check_library_page(school_name):
                         HomePage().click_tab_hw()

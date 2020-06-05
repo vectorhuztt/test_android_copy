@@ -15,6 +15,7 @@ from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
 from utils.dict_slice import dict_slice
 from utils.games_keyboard import Keyboard
+from utils.wait_element import WaitElement
 
 
 class WordTestPage(BasePage):
@@ -23,86 +24,90 @@ class WordTestPage(BasePage):
         self.home = HomePage()
         self.sql_handler = WordTestSqlHandler()
         self.spell = SpellWordGame()
+        self.wait = WaitElement()
 
     @teststep
     def wait_check_no_test_word_page(self):
         """测试次数不足页面检查点"""
         locator = (By.XPATH, '//android.widget.Button[contains(@text,"确定")]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_start_test_page(self):
         """开始测试页面检查点"""
         locator = (By.XPATH, '//android.widget.Button[contains(@text,"开始复习")]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_preview_word_page(self):
         """单词预览页面检查点"""
         locator = (By.ID, self.id_type() + "start")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_select_word_count_page(self):
         """单词测试数页面检查点"""
         locator = (By.ID, self.id_type() + "num_hint")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_test_game_page(self):
         """单词测试游戏页面检查点"""
         locator = (By.ID, self.id_type() + "time")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def word_count_select_tab(self):
         """单词测试数选项"""
-        ele = self.driver.find_elements_by_xpath('//android.support.v7.widget.RecyclerView[contains(@resource-id, "test_num_container")]/'
-                                                 'android.view.ViewGroup/android.widget.TextView')
-        return ele
+        locator = (By.XPATH, '//android.support.v7.widget.RecyclerView[contains(@resource-id, "test_num_container")]/'
+                             'android.view.ViewGroup/android.widget.TextView')
+        return self.wait.wait_find_elements(locator)
+
 
     @teststep
     def word_test_type(self):
         """测试类型"""
-        ele = self.driver.find_elements_by_xpath("//android.support.v7.widget.RecyclerView[contains(@resource-id, 'test_type_container')]/"
-                                                 "android.view.ViewGroup/android.widget.TextView")
-        return ele
-
+        locator = (By.XPATH, "//android.support.v7.widget.RecyclerView[contains(@resource-id, 'test_type_container')]/"
+                             "android.view.ViewGroup/android.widget.TextView")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def click_word_test_tab(self):
         """点击单词测试按钮"""
-        self.driver.find_element_by_id(self.id_type() + "word_test").click()
+        locator = (By.ID, self.id_type() + "word_test")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_confirm_btn(self):
         """点击复习或者确定按钮"""
-        self.driver.find_element_by_id(self.id_type() + "next").click()
+        locator = (By.ID, self.id_type() + "next")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def click_start_test_btn(self):
         """点击开始测试按钮"""
-        self.driver.find_element_by_id(self.id_type() + "start").click()
+        locator = (By.ID, self.id_type() + "start")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def preview_explain(self):
         """预览单词"""
-        ele = self.driver.find_elements_by_id(self.id_type() + "explain")
-        return ele
+        locator = (By.ID, self.id_type() + "explain")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def preview_voice_icon(self, explain):
         """预览单词喇叭图标"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="{}"]/preceding-sibling'
-                                                '::android.widget.ImageView'.format(explain))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]/preceding-sibling'
+                             '::android.widget.ImageView'.format(explain))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def preview_word(self, explain):
         """预览单词解释"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="{}"]/preceding-sibling::'
-                                                'android.widget.TextView[contains(@resource-id,"word")]'.format(explain))
-        return ele
+        locator = (By.XPATH, '//android.widget.TextView[@text="{}"]/preceding-sibling::'
+                             'android.widget.TextView[contains(@resource-id,"word")]'.format(explain))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def test_select_page_operate(self, tab_index):
@@ -229,7 +234,6 @@ class WordTestPage(BasePage):
                 self.spell.rate_judge(game_count, x)  # 校验剩余题数
                 explain = self.spell.word_explain().text
                 print('解释：', explain)
-                self.spell.normal_word_spell_hint_word_check()
 
                 if x in wrong_index:
                     self.spell.word_spell_play_process(game_mode=1)

@@ -4,101 +4,98 @@
 # Date:     2019/3/28 13:13
 # -------------------------------------------
 import re
+import time
 
 from selenium.webdriver.common.by import By
 
 from app.honor.student.games.all_game_init import AllGameClass
 from conf.base_page import BasePage
 from conf.decorator import teststep, teststeps
+from utils.wait_element import WaitElement
 
 
 class ResultPage(BasePage):
-    def __init__(self):
-        self.all_game = AllGameClass()
+    all_game = AllGameClass()
+    wait = WaitElement()
 
     @teststep
     def wait_check_result_page(self):
         """结果页面检查点"""
-        locator = (By.ID, self.id_type()+'detail')
-        return self.get_wait_check_page_result(locator, timeout=15)
+        locator = (By.ID, self.id_type() + 'detail')
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_medal_page(self):
         """勋章页面检查点"""
         locator = (By.ID, self.id_type() + 'share_img')
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def wait_check_answer_page(self):
         """查看答案页面"""
         locator = (By.XPATH, '//*[@text="查看答案"]')
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def check_result_btn(self):
         """查看答案"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'detail')
-        return ele
+        locator = (By.ID, self.id_type() + "detail")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def again_btn(self):
         """错题再练 再练一次按钮"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'again')
-        return ele
+        locator = (By.ID, self.id_type() + "again")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def correct_rate(self):
         """正确率"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'correct_rate')
+        locator = (By.ID, self.id_type() + "correct_rate")
+        ele = self.wait.wait_find_element(locator)
         return int(re.findall(r'\d+', ele.text)[0])
 
     @teststep
     def score(self):
         """积分"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'score')
+        locator = (By.ID, self.id_type() + "score")
+        ele = self.wait.wait_find_element(locator)
         return int(re.findall(r'\d+', ele.text)[0])
 
     @teststep
     def star(self):
         """星星"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'star')
+        locator = (By.ID, self.id_type() + "star")
+        ele = self.wait.wait_find_element(locator)
         return int(re.findall(r'\d+', ele.text)[0])
 
     @teststep
     def time(self):
         """时间"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'time')
-        return ele
+        locator = (By.ID, self.id_type() + "time")
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def explains(self):
-        ele = self.driver.find_elements_by_id(self.id_type() + 'explain')
-        return ele
+        locator = (By.ID, self.id_type() + "explain")
+        return self.wait.wait_find_elements(locator)
 
     @teststep
-    def words(self, explain):
+    def result_word(self, explain):
         """单词"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="%s"]/'
-                                                'preceding-sibling::android.widget.TextView' % explain)
-        return ele.text
+        locator = (By.XPATH, '//android.widget.TextView[@text="%s"]/'
+                             'preceding-sibling::android.widget.TextView' % explain)
+        return self.wait.wait_find_element(locator).text
 
     @teststep
-    def voices(self, explain):
-        """声音图标"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="%s"]/'
-                                                'preceding-sibling::android.widget.ImageView[contains(@resource-id, "audio")]' % explain)
-        return ele
-
-    @teststep
-    def correct_wrong_icon(self, explain):
-        """我的结果图标"""
-        ele = self.driver.find_element_by_xpath('//android.widget.TextView[@text="%s"]/'
-                                                'preceding-sibling::android.widget.ImageView[contains(@resource-id, "result")]' % explain)
-        return ele
-
-    @teststep
-    def check_bank_result(self, game_name, mine_answer, has_medal):
-        """结果页面答案对照"""
+    def check_bank_result(self, game_name, mine_answer, *, has_medal=False):
+        """
+        结果页面答案对照
+        :param game_name: 游戏名称
+        :param mine_answer: 我的答案
+        :param has_medal: 是否有勋章出现
+        :return: result_page_info 查看答案信息
+        """
         if has_medal:
             if self.wait_check_medal_page():
                 print('获取勋章')
@@ -143,7 +140,16 @@ class ResultPage(BasePage):
             return result_page_info
 
     @teststep
-    def result_multi_data_check(self, fq, result, star_num, score_num, judge_score=True):
+    def result_multi_data_check(self, fq, result, *, star_num=None, score_num=None, judge_score=False):
+        """
+        结果页数据校验
+        :param fq:  做题次数
+        :param result: 做题结果
+        :param star_num: 星星数
+        :param score_num:  得分数
+        :param judge_score: 是否判断分数
+        :return:
+        """
         if self.wait_check_result_page():
             print('===== 结果页数据核对 =====\n')
             print('本次做的题数：', result[-1])
@@ -174,4 +180,5 @@ class ResultPage(BasePage):
                     self.base_assert.except_error('第二遍做题后， 错填再练按钮内容未变为再练一遍')
                 print('-*' * 50, '\n')
             self.again_btn().click()
+            time.sleep(2)
 

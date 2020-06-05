@@ -16,7 +16,7 @@ class ClozeGame(SingleChoiceGame):
     def wait_check_cloze_page(self):
         """完形填空页面检查点"""
         locator = (By.ID, self.id_type() + "rich_text")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststeps
     def cloze_game_play_process(self, game_type=1, index=0, do_right=False, right_answer=None):
@@ -55,7 +55,7 @@ class ClozeGame(SingleChoiceGame):
         total_count = self.rest_bank_num()
         for x in range(total_count):
             self.rate_judge(total_count, x)  # 剩余题数校验
-            question = self.question()[0].text.strip()
+            question = self.question().text.strip()
             print('问题：', question)
             self.next_btn_judge('false', self.fab_next_btn)  # 判断下一题状态
             if half_exit:

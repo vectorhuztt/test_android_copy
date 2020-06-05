@@ -1,5 +1,9 @@
 __pycache__
 .idea
+/virtual_env
 *.apk
+/node_modules
 /storges
 *.json
+/venv
+.vscode

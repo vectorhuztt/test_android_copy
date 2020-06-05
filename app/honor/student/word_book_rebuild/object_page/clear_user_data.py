@@ -14,6 +14,7 @@ from conf.base_page import BasePage
 from conf.decorator import teststep
 from utils.toast_find import Toast
 from conf.base_config import GetVariable as gv
+from utils.wait_element import WaitElement
 
 
 class CleanDataPage(BasePage):
@@ -21,6 +22,7 @@ class CleanDataPage(BasePage):
     def __init__(self):
         self.home = HomePage()
         self.common = WordBookSql()
+        self.wait = WaitElement()
         self.user_center = UserCenterPage()
         self.user_info = UserInfoPage()
 
@@ -28,59 +30,44 @@ class CleanDataPage(BasePage):
     def wait_check_set_up_page(self):
         """以“设置” text 为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'设置')]")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_clear_cache_page(self):
         """以“设置” text 为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'清除缓存')]")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
 
     @teststep
     def wait_check_grade_page(self):
         """以“请选择你所处的年级” text为依据"""
         locator =(By.XPATH, "//android.widget.TextView[contains(@text,'请选择你所处年级')]")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def select_setting_up(self):
         """点击设置"""
-        self.driver.\
-            find_element_by_xpath("//android.widget.TextView[contains(@text,'设置')]")\
-            .click()
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'设置')]")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def select_clear_cache(self):
         """清除缓存"""
-        self.driver. \
-            find_element_by_xpath("//android.widget.TextView[contains(@text,'清除缓存')]") \
-            .click()
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'清除缓存')]")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def grade_btn(self):
         """点击年级"""
-        self.driver. \
-            find_element_by_xpath("//android.widget.TextView[contains(@text,'年级')]") \
-            .click()
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'年级')]")
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def grade_options(self):
         """年级选项"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_grade')
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_grade')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def select_another_grade(self):
@@ -91,9 +78,8 @@ class CleanDataPage(BasePage):
     @teststep
     def select_certain_grade(self):
         """选择指定年级 """
-        xpath_ele = "//android.widget.TextView[contains(@text,'{}')]".format(gv.GRADE)
-        self.driver. \
-            find_element_by_xpath(xpath_ele).click()
+        locator = (By.XPATH, "//android.widget.TextView[contains(@text,'{}')]".format('三年级'))
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def reset_grade(self):

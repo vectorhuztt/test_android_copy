@@ -50,6 +50,5 @@ class LibrarySql(SqlDb):
         """查询书籍下任意书单的学习记录"""
         sql = 'SELECT id FROM library_student_book_record WHERE `student_id` ={}  and ' \
               'DATEDIFF(start_time,NOW())=0 and book_id in ({})'.format(stu_id, set_ids)
-        print(sql)
         return self.execute_sql_return_result(sql)
 

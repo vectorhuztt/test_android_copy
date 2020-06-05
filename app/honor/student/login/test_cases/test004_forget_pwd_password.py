@@ -4,6 +4,7 @@ import unittest
 from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.login.object_page.login_page import LoginPage
 from app.honor.student.login.test_data.forget_pwd_data import phone_data, pwd_data
+from app.honor.student.punch_activity.object_page.punch_page import PunchActivityPage
 from app.honor.student.user_center.object_page.user_center_page import Setting
 from conf.base_page import BasePage
 from conf.decorator import setup, teardown, testcase, teststeps
@@ -37,10 +38,11 @@ class LoginForgetPwd(unittest.TestCase):
     @testcase
     def test_forget_pwd_(self):
         # 判断APP当前状态
+        PunchActivityPage().close_home_activity_tip()
         if self.home.wait_check_home_page():  # 在主界面
             print('已登录')
             self.set.logout_operate()  # 退出登录
-        elif self.login.wait_check_page():  # 在登录界面
+        elif self.login.wait_check_login_page():  # 在登录界面
             print('在登录界面')
         else:
             print('在其他页面')
@@ -49,7 +51,7 @@ class LoginForgetPwd(unittest.TestCase):
             if self.home.wait_check_home_page():  # 在主界面
                 print('已登录')
                 self.set.logout_operate()  # 退出登录
-            elif self.login.wait_check_page():  # 在登录界面
+            elif self.login.wait_check_login_page():  # 在登录界面
                 print('在登录界面')
         
         self.forget_pwd_operate()  # 具体操作
@@ -57,7 +59,7 @@ class LoginForgetPwd(unittest.TestCase):
     @teststeps
     def forget_pwd_operate(self):
         """ 忘记密码 具体操作"""
-        if self.login.wait_check_page():
+        if self.login.wait_check_login_page():
             self.login.forget_password()  # 忘记密码按钮
             if self.login.wait_check_forget_page():
                 phone = self.login.input_phone()

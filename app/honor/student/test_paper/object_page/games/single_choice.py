@@ -1,7 +1,4 @@
-import random
-
 from app.honor.student.games.choice_single import SingleChoiceGame
-from app.honor.student.login.object_page.home_page import HomePage
 from app.honor.student.test_paper.object_page.answer_page import AnswerPage
 from conf.decorator import teststeps
 
@@ -14,7 +11,7 @@ class SingleChoice(SingleChoiceGame):
         """单项选择 游戏过程 """
         exam_json['单项选择'] = bank_json = {}
         for x in range(num):
-            question = self.question()[0].text
+            question = self.question().text
             print(x+1, '.', question)
             opt_char = self.opt_char()
             opt_text = self.opt_options()

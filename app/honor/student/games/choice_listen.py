@@ -14,18 +14,18 @@ class ListenChoiceGame(ClozeGame):
     def wait_check_listen_choice_page(self):
         """听力选择页面 以选项id作为依据"""
         locator = (By.ID, self.id_type() + "exo_progress")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_red_hint_page(self):
         """红色提示检查点"""
         locator = (By.ID, self.id_type() + "tv_hint")
-        return self.get_wait_check_page_result(locator, timeout=3)
+        return self.wait.wait_check_element(locator, timeout=3)
 
     @teststep
     def wait_check_commit_btn(self):
         locator = (By.ID, self.id_type() + "fab_commit")
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def red_hint(self):

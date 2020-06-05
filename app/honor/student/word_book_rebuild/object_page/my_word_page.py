@@ -13,6 +13,7 @@ from app.honor.student.word_book_rebuild.object_page.games.word_spelling_page im
 from conf.base_page import BasePage
 from conf.decorator import teststeps, teststep
 from utils.games_keyboard import Keyboard
+from utils.wait_element import WaitElement
 
 
 class MineWordsPage(BasePage):
@@ -21,98 +22,82 @@ class MineWordsPage(BasePage):
         self.flash = FlashCard()
         self.spell = SpellingWord()
         self.data = WordDataHandlePage()
-        self.assert_act = AssertAction()
+        self.wait = WaitElement()
 
     @teststeps
     def wait_check_mine_word_page(self):
         """以“我的单词”为依据"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'我的单词')]")
-        try:
-            WebDriverWait(self.driver, 15, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_end_page(self):
         """滑到底 页面检查"""
         locator = (By.XPATH, "//android.widget.TextView[contains(@text,'到底啦 下拉刷新试试')]")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except:
-            return False
+        return self.wait.wait_check_element(locator)
 
 
     @teststeps
     def wait_check_no_word_page(self):
         """wording:您还没有已背单词哦，快开始背单词吧"""
         locator = (By.ID, "//android.widget.TextView[contains(@text,'到底啦 下拉刷新试试')]")
-        try:
-            WebDriverWait(self.driver, 5, 0.5).until(lambda x: x.find_element(*locator))
-            return True
-        except Exception:
-            return False
+        return self.wait.wait_check_element(locator)
 
     @teststeps
     def no_word_tip_text(self):
         """wording:您还没有已背单词哦，快开始背单词吧"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'status_error_hint_view').text
+        locator = (By.ID, self.id_type() + 'status_error_hint_view')
+        ele = self.wait.wait_find_element(locator)
         print(ele.text)
 
     @teststep
     def click_my_word_btn(self):
         """我的单词"""
-        self.driver.\
-            find_element_by_id(self.id_type() + 'my_word')\
-            .click()
+        locator = (By.ID, self.id_type() + 'my_word')
+        self.wait.wait_find_element(locator).click()
 
     @teststep
     def total_word(self):
         """单词总数"""
-        ele = self.driver \
-            .find_element_by_id(self.id_type() + "total_word")
+        locator = (By.ID, self.id_type() + 'total_word')
+        ele = self.wait.wait_find_element(locator)
         return int(ele.text.split(':')[1])
 
     @teststep
     def get_words(self):
         """单词"""
-        ele = self.driver\
-            .find_elements_by_id(self.id_type() + "word")
-        return ele
+        locator = (By.ID, self.id_type() + 'word')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def progress(self):
         """每个单词的轮次"""
-        ele = self.driver \
-            .find_element_by_id(self.id_type() + "progress")
-        return ele
+        locator = (By.ID, self.id_type() + 'progress')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def order_info(self):
         """排名"""
-        ele = self.driver \
-            .find_elements_by_id(self.id_type() + "tv_order")
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_order')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def st_icon(self):
         """头像"""
-        ele = self.driver\
-            .find_elements_by_id(self.id_type() + "iv_head")
-        return ele
+        locator = (By.ID, self.id_type() + 'iv_head')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def st_name(self):
         """学生姓名"""
-        ele = self.driver \
-            .find_elements_by_id(self.id_type() + "tv_name")
-        return ele
+        locator = (By.ID, self.id_type() + 'tv_name')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def word_page_scale(self):
         """获取一页单词所占页面比例"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'rv')
+        locator = (By.ID, self.id_type() + 'rv')
+        ele = self.wait.wait_find_element(locator)
         return float('%.2f' % (ele.size['height']/self.get_window_size()[1]))
 
 

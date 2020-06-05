@@ -17,59 +17,61 @@ class ListenLinkSentenceGame(SentenceLinkGame):
     def wait_check_listen_sentence_page(self):
         """听音连句页面检查点"""
         locator = (By.ID, '{}rich_text'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_clear_btn_page(self):
         """检查是否存在清除按钮"""
         locator = (By.ID, '{}clear'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator, timeout=5)
+        return self.wait.wait_check_element(locator, timeout=5)
 
     @teststep
     def listen_link_clear_btn(self):
         """听音连句"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'clear')
-        return ele
+        locator = (By.ID, self.id_type() + 'clear')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def text_for_select(self):
         """下方可点击的文本"""
-        ele = self.driver.find_elements_by_id(self.id_type() + "text")
+        locator = (By.ID, self.id_type() + 'text')
+        ele = self.wait.wait_find_elements(locator)
         return [x for x in ele if x.text]
 
     @teststep
     def right_sentence_answer(self):
         """正确答案"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'tv_right')
-        return ele.text
+        locator = (By.ID, self.id_type() + 'tv_right')
+        return self.wait.wait_find_element(locator).text
 
     @teststep
     def sentence_explain(self):
         """解释"""
-        ele = self.driver.find_elements_by_id(self.id_type() + 'tv_explain')
-        return ele
-
+        locator = (By.ID, self.id_type() + 'tv_explain')
+        return self.wait.wait_find_elements(locator)
 
     @teststep
     def group_right_answer(self, index):
         """句型转换正确句子"""
-        ele = self.driver.find_element_by_xpath("//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']//"
-                                                "android.widget.TextView[contains(@resource-id, 'tv_right')]".format(index))
-        return ele.text
+        locator = (By.XPATH, "//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']"
+                             "//android.widget.TextView[contains(@resource-id, 'tv_right')]".format(index))
+        return self.wait.wait_find_element(locator).text
+
 
     @teststep
     def group_sentence_explain(self, index):
         """听音连句 句子解释"""
-        ele = self.driver.find_element_by_xpath("//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']//"
-                                                "android.widget.TextView[contains(@resource-id, 'tv_explain')]".format(index))
-        return ele.text
+        locator = (By.XPATH, "//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']"
+                             "//android.widget.TextView[contains(@resource-id, 'tv_explain')]".format(index))
+        return self.wait.wait_find_element(locator).text
+
 
     @teststep
     def group_sentence_speck_icon(self, index):
         """听音连句 句子喇叭"""
-        ele = self.driver.find_element_by_xpath("//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']//"
-                                                "android.widget.ImageView[contains(@resource-id, 'iv_speak')]".format(index))
-        return ele
+        locator = (By.XPATH, "//android.support.v7.widget.RecyclerView/android.widget.LinearLayout[@content-desc='{}']"
+                             "//android.widget.ImageView[contains(@resource-id, 'iv_speak')]".format(index))
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def listen_link_sentence_play_process(self, do_right=False, right_answer=None):

@@ -170,6 +170,10 @@ class WordRebuildSql(SqlDb):
         return self.execute_sql_return_result(sql)
 
     # ======================== 我的单词 ================================
+    def find_word_by_id(self, word_id):
+        sql = 'SELECT vocabulary FROM wordbank WHERE id = {}'.format(word_id)
+        return self.execute_sql_return_result(sql)
+
     def find_student_total_words_count(self, stu_id):
         sql = 'SELECT DISTINCT(wordbank_id) FROM word_student_fluency ' \
               'WHERE student_id = {} and fluency_level > 0'.format(stu_id)

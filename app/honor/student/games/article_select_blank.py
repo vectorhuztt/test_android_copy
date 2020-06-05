@@ -19,32 +19,32 @@ class SelectBlankGame(GameCommonEle):
     def wait_check_select_blank_page(self):
         """选词填空页面检查点"""
         locator = (By.ID, '{}rich_text'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     def wait_check_hint_btn_page(self):
         """检测是否存在提示按钮"""
         locator = (By.ID, '{}prompt'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def wait_check_hint_content_page(self):
         """提示词页面检查点"""
         locator = (By.ID, '{}md_titleFrame'.format(self.id_type()))
-        return self.get_wait_check_page_result(locator)
+        return self.wait.wait_check_element(locator)
 
     @teststep
     def hint_answer(self):
         """提示答案"""
-        ele = self.driver.find_element_by_xpath('//android.widget.FrameLayout[contains(@resource-id ,"md_customViewFrame")]/'
-                                                'android.widget.ScrollView/android.widget.TextView')
+        locator = (By.XPATH, '//android.widget.FrameLayout[contains(@resource-id ,"md_customViewFrame")]/'
+                             'android.widget.ScrollView/android.widget.TextView')
+        ele = self.wait.wait_find_element(locator)
         return ele.text
 
     @teststep
     def hint_btn(self):
         """提示词"""
-        ele = self.driver.find_element_by_id(self.id_type() + 'prompt')
-        return ele
-
+        locator = (By.ID, self.id_type() + 'prompt')
+        return self.wait.wait_find_element(locator)
 
     @teststep
     def select_blank_play_process(self, do_right=False, right_answer=None):
